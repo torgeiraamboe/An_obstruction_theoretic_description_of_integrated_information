@@ -1,0 +1,152 @@
+
+
+\section{IIT systems}
+
+In \citeme, Tull--Kleiner develop a category theoretic foundation for integrated information theory, based on symmetric monoidal categories with some extra structure that allows for the modeling of cause-effect structures. We will use this as a backdrop for our cohomology theory, hence we quickly review their setup. 
+
+\subsection{Process theories and decompositions}
+
+A \emph{process theory} is a symmetric monoidal category $(\C, \otimes, \1)$ together with two designated maps $q_S\: S\to \1$ and $w_S\: \1\to S$, satisfying standard monoidal naturality conditions. Objects in $\C$ are interpreted as system types, and morphisms as physical processes. Morphisms of the form $\1 \to S$ are called \emph{states}, while morphisms $S\to \1$ are called \emph{effects} and morphisms $\1\to \1$ are called \emph{scalars}. The designated maps $q$ and $w$ will be referred to as the \emph{discarding effect} and the \emph{noise state} respectively. A morphism $f\:S\to S'$ is \emph{causal} if it preserves the discarding effect, 
+$$q_{S'}\circ f = q_S,$$
+and similarly \emph{cocausal} if it preserves the noise state. 
+
+\begin{remark}
+    Sometimes it is natural to require $C$ to be a symmetric monoidal \emph{dagger} category, which is interpreted as modeling a time-reversal operation.  
+\end{remark}
+
+%Given an object $A\in \C$, we define $\St_c(A)$ to be the collection of causal states of $A$: 
+%$$\St_c(A)= \{s\: \1\to A \mid q_A \circ s = q_\1\}.$$
+%In other words, $\St_c(A)$ is the collection of retractions of the discarding effect of $A$. 
+
+\begin{example}
+    The standard example of a process theory is the category of classical probabilistic processes. This is the category $\Class$ of finite sets, where a morphism $S\to S'$ assigns to an element $s\in S$ an 'unnormalized probability distribution' of elements in $S'$, which are maps $S\times S' \to \R^+$. Composition of two maps $f\: S\times S'\to \R^+$ and $g\: S'\times S'' \to \R^+$, is defined by
+    \begin{align*}
+        f\circ g \: S\times S'' &\to \R^+ \\
+        (s,s'') &\longmapsto \sum_{s'\in S'}f(s,s')g(s',s'').
+    \end{align*}
+    The monoidal structure is the cartesian product, meaning the unit $\1$ is the singleton set. Product of morphisms is given by 
+    $$f\otimes g (s,s'')(s',s''') = f(s,s')g(s'',s''').$$
+    The discarding process $q_S$ is the unique process with $q_S(s) = 1$ for all $s\in S$, meaning a process is causal whenever it is stochastic. The noise state is the uniform probability distribution with $w_S(s) = \frac{1}{\vert S \vert}$. This example has a natural time reversal operation, given by $f^\dagger(s,s') = f(s',s)$. 
+\end{example}
+
+
+Let $(\C,\otimes,\1,q)$ be a process theory, and $S$ an object in $\C$. A \emph{decomposition} of $S$ is a pair of objects $A, B \in \C$ together with a causal isomorphism $\psi\: S \simeq A\otimes B$. We denote decompositions by $(A, B, \psi)$, or sometimes simply by $(A, B)$.
+
+Any object $S$ has a decomposition $(S,\1)$, which we call the \emph{trivial} decomposition. Two decompositions $(A, B, \psi)$ and $(A', B',\psi')$ are \emph{equivalent} if there are causal isomorphisms $f\: A\simeq A'$ and $g\: B\simeq B'$, such that 
+$$\psi' = (f\otimes g)\circ \psi.$$
+The \emph{complement} decomposition of $(A,B)$ is the same decomposition, just in the opposite order; it is denoted $(A,B)^\perp = (B, A)$. If two decompositions are equivalent, then so are their complements. 
+
+We define $\D(S)$ to be the set of equivalence classes of decompositions of $S$. The operation $(-)^\perp$ acts on $\D(S)$, and we define a \emph{decomposition set} of $S$ to be a subset $\D \subseteq \D(S)$ that contains the trivial decomposition and is closed under $(-)^\perp$. 
+
+Given a decomposition set $\D$ of $S$, and a decomposition $(A, B, \psi)\in \D$, we define the \emph{restricted} decomposition set $\D_{\mid A}$ to be the set of decompositions of $A$ that can be extended to a decomposition of $S$ in $\D$. Furthermore, we define the \emph{restriction} of a state $s\: \1\to S$ to $A$ to be the state defined by 
+$$s_{\mid A} = (\Id_A\otimes q_{B})\circ \psi \circ s \: \1\to A,$$
+and similarly for $B$. Intuitively, we identify $S$ with its decomposition, and then discard the factor we don't want to consider. By functoriality and naturality, such restrictions depend only on the equivalence class in $\D(S)$, and not on the particular representative. 
+
+\subsection{System types and directional cuts}
+
+To define generalized integrated information theories, we need a notion of systems to study -- defined as follows. A \emph{system type} is a triple $(S, \D, T)$, where $S\in \C$, $\D$ is a decomposition set of $S$ and $T\:S\to S$ is a causal process that is interpreted as \emph{time evolution}. The most basic example is the \emph{trivial} system type $(\1, \{\1\otimes \1\}, \Id_\1)$. 
+
+A state of a system $(S, \D, T)$ is a state of $S$. Given such a state $s$ and a decomposition $(A, B)\in \D$, \citeme constructs a \emph{subsystem} $(A, \D_{\mid A}, T_{\mid A})$, where the restricted time evolution is defined by the composition
+$$A\overset{1\otimes s_{\mid B}}\to A\otimes B \overset{T}\to A\otimes B \overset{1\otimes q_{A}}\to A.$$
+These subsystems are again independent of the class representative in $\D$. 
+
+Given a system type $(S, \D, T)$ and a decomposition $(A, B, \psi) \in \D$, one needs to be able to form systems that disconnects certain causal connections in the total system. IIT 3.0 \citeme does this by introducing \emph{cut systems}, that directionally disconnects causal flow from the two parts. IIT 4.0 \citeme does this in a slightly different manner, by replacing parts of the inputs of the time evolutions with independent noise. We have included versions of IIT 4.0's disconnections in arbitrary system states for reference and intuition, but we remark that the actual implementation of such disconnections does not matter much, as long as they are functorial. 
+
+The $B$-cut replaces the contribution of $B$ to the time evolution with the noise state, meaning that only the contribution from $A$ matters. It can formally be described as follows:
+$$T^{\psi, \leftarrow}\: A\otimes B \overset{1\otimes w_B q_B}\to A\otimes B \overset{T}\to A\otimes B$$
+In spirit this forces the time evolution to retain all self-influences from $A$, and from $A$ to $B$, but removes all influences from $B$ to $A$. The arrow in the notation is meant to denote the direction that is removed. Similarly, the $A$-cut is defined by
+$$T^{\psi,\rightarrow}\: A\otimes B \overset{w_A q_A\otimes 1}\to A\otimes B \overset{T}\to A\otimes B,$$
+and the $A$-$B$-cut by
+$$T^{\psi, \leftrightarrow}\: A\otimes B \overset{1\otimes w_A\otimes w_B\otimes 1}\to A\otimes B\otimes A\otimes B \overset{T\otimes T}\to A\otimes B \otimes A \otimes B \overset{1\otimes q_B\otimes q_A\otimes 1}\to A\otimes B.$$
+The $A$-$B$-cut corresponds to Tull--Kleiner's bidirectional cut, where one evolves the system as if $A$ and $B$ were completely disconnected from each other. 
+
+We will use the notation $T^{\psi, \delta}$, with $\delta \in \{\leftarrow, \rightarrow, \leftrightarrow\}$ to denote a general disconnection based on a decomposition $\psi\: S\simeq A\otimes B$. As we did above with the restricted time evolution, we also get definitions of restricted cuts: $T^{\psi, \delta}_{\mid A}$.  
+
+
+
+\section{Integrated cohomology and obstruction classes}
+
+In this section we present the more novel parts of this paper, which is a cohomology theory for IIT systems. We then build an obstruction theory for decomposing a physical system based on this cohomology theory, and show that it detects the existence of integrated information. Lastly we extend this to naturally define higher order integration, often referred to as higher \emph{synergy}. 
+
+Our setup is formally analogous to Abramsky--Brandenburger's sheaf theoretic description of contextuality, see \citeme and \citeme, but differs in the added dynamics of the systems. However, we feel that the similarities are enticing, and that the possible interactions are worth further studies. 
+%https://iopscience.iop.org/article/10.1088/1367-2630/13/11/113036
+%https://arxiv.org/abs/2011.04899
+
+Given a system type $(S, \D, T)$ and a global state $s\: \1 \to S$, we define the category of subsystems of $S$ to be the poset category defined by the poset structure in \citeme. In other words, $\Sub(S)$ is the category consisting of subsystems as objects, and morphisms being single comparison maps by the preorder structure. 
+% appendix in Tull-Kleiner. 
+
+The idea is then as follows: 
+\begin{enumerate}
+    \item define a presheaf $\F$ on $\Sub(S)$ that describes the cause-effect dynamics of subsystems of $S$, where the restriction maps describe subsystem dynamics;
+    \item define the integrated cohomology of $S$ to be the presheaf-cohomology of the nerve of $\Sub(S)$ valued in $\F$;
+    \item define natural obstruction classes in $H^1(N^\bullet(\Sub(S)); \F)$;
+    \item prove that these obstruction classes detect the existence of integrated information in $S$. 
+\end{enumerate}
+
+There are several possible choices for what presheaf $\F$ to use, depending on how categorical or how system-type specific one wants to be. If one focuses on actual IIT 4.0 constructions, then perhaps a probability based approach using intrinsic information and intrinsic difference would be a good strategy. We have, however, opted for a more categorical and general approach. This is in part to give integrated information more functorial properties, as discussed by Tull--Kleiner in \citeme. 
+
+As we want to have access to the time evolutions $T$ and $T^{\psi, \delta}$ for subsystems, it is natural to consider the \emph{endomorphisms} as a natural starting position for the presheaf. As we need to be able to understand the \emph{difference} between $T$ and $T^{\psi, \delta}$, we also need access to a subtraction operation. The standard way to do this is to define the presheaf on objects by
+\begin{align*}
+    \F\: \Sub(S)\op &\to \Ab \\
+    A&\longmapsto \Z[\End(A)]
+\end{align*}
+in other words it is the free abelian group on $\End(A)$. Given a subsystem $U\leq A$, we define for any endomorphism $f\: A\to A$ a restriction map 
+$$\rho_{U}^{A}(f) = (\Id_U \otimes q_V)\circ f \circ (\Id_U\otimes w_V),$$
+where $V$ is the complement of $U$, i.e. the object such that $A\simeq U\otimes V$, which exists by the definition of a subsystem. We then linearly extended this to $\Z[\End(A)]$, making $\F$ a presheaf. 
+
+\begin{remark}
+    One could also naturally choose to use the actual state $s_{\mid V}$ instead of the noise state $w_V$ in the definition of the restriction maps. Doing this would mean that the obstruction theory detects context dependent integration, and not the intrinsic integration of the system. We believe that studying what happens upon making this change is an interesting avenue of future research. 
+\end{remark}
+
+Given a system state $(S, \D, T)$ and state $s\: \1 \to S$, we define the \emph{integrated cohomology} of $(S, \D, T)$ to be the $\F$-valued presheaf cohomology of the nerve of $\Sub(S)$:
+$$H^k_{int}(S) := H^k(N^\bullet(\Sub(S));\F).$$
+
+It is important to note that this is not simply the topological nerve cohomology of $\Sub(S)$, as this will almost always be trivial. The important part here is the use of the presheaf $\F$, which makes this a highly non-trivial cohomology theory. 
+
+The intuition is as follows: The nerve of $\Sub(S)$ gives us the geometric construction \emph{where} integrated information can be tested. It consists formally of chains of substates of $S$ of all lengths, with topological structure that understands how these chains are related and connected. The presheaf gives us \emph{what} is measured on every level -- in our case the system dynamics. The cohomology gives us information about which local dynamics that can be glued together to form a global dynamic. If gluing fails, then there is some level of the system where its global dynamics cannot be described in terms of local dynamics, which is the essence of the system having integrated information. 
+
+The \emph{decomposition obstruction classes} of $S$ are defined as the cohomology class of the cochains
+$$\Delta^{\psi, \delta}(A) = T_{\mid A} - T^{\psi, \delta}_{\mid A}$$
+for all substates $A$, decompositions $\psi$ and directions $\delta \in \{\rightarrow, \leftarrow, \leftrightarrow\}$. 
+
+\begin{remark}
+The reader paying minute attention has perhaps noticed that mechanisms and purviews have yet to be featured in this framework. Our approach to measuring IIT is structurally somewhat different, as instead of starting with mechanisms and purviews and then aggregate local information upwards, we have the global structure as a reference and let mechaniosms and purviews be derived observables. Hence they do not arise as primitive data, but as local test probes for evaluating the obstruction classes. We will, however, need to define and use these to relate our obstruction classes to the integrated information of $S$, as we will do in the following section.
+\end{remark}
+
+\subsection{Obstruction classes and IIT}
+
+The goal of this section is to prove the following theorem.
+
+\begin{theorem}
+    Let $(S, \D, T)$ be a system state and $s\: \1\to S$ a state of $S$. If there is no integrated information in $S$, then all of the decomposition obstruction classes vanish. In other words, $\Phi(S)=0 \implies [\Delta^{\psi, \delta}(A)] = 0$ for all $A$, $\psi$ and $\delta$. In particular, this means that the existence of non-vanishing obstruction classes implies $\Phi(S)>0$, and hence that the classes $[\Delta^{\psi, \delta}(A)]$ form actual obstructions to the decomposition of causal structures. 
+\end{theorem}
+
+In order to do so we need to be able to compute and understand $\Phi$. We will use the method of \emph{generalized IIT's} as developed by Tull--Kleiner in \citeme. This ensures that our theory works not only for classical IIT, but also quantum IIT and other variants that one would like to study, \citeme. 
+
+Generalized IIT's requires systems, as we have already studied, but also \emph{experience spaces} and \emph{cause-effect structures}. The details are described in \citeme, but we briefly define these for reference. 
+
+An \emph{experience space} is a set $\E$ together an \emph{intensity function} $\Vert-\Vert\: \E \to \R^+$, a \emph{distance function} $d(-,-)\: \E\times \E\to \R^+$ and a \emph{scalar multiplication} $\R^+\times\E \to \E$ such that
+\begin{enumerate}
+    \item $\Vert re \Vert = r\Vert e\Vert$
+    \item $r(se)=(rs)e$
+    \item $1e = e$
+\end{enumerate}
+for all $e\in \E$ and $r,s\in \R^+$. 
+
+A \emph{mechanism} and a \emph{purview} are both chosen subsystems (as defined earlier) of a given system state $(S, \D, T)$, depending on the same state $s\: \1 \to S$. Intuitively a mechanism describes the subset of $S$ that we are ``letting make a difference'', and the purview described the subset of $S$ that is affected. 
+
+Given a mechanism-purview pair $M$, $P$ we denote the combined decomposition set
+$$\D_{\mid M, P} = \D_{\mid M}\times \D_{\mid P}.$$
+The trivial decomposition is the product of the trivial decompositions of $M$ and $P$, i.e., $((M, \1), (P, \1))$. 
+
+We can now define \emph{case-effect repertoirs} of a system $S$, which are defined as an assignment of an experience space $\E(S)$, as well as for each state $s\:\1\to S$ and for each mechanism-purview pair $M$, $P$ two elements $cau_s(M,P)$ and $eff_s(M,P)$ in $\E(S)$ together with two decomposition maps from 
+$$cau, eff\: \D_{\mid M, P} \to \E(S)$$
+sending the trivial decomposition to the chosen elements, i.e. $cau((M,\1), (P,\1))= cau_s(M,P)$ and similarly for $eff$. 
+
+
+
+%Given a mechanism $(M, \D_{\mid M}, T_{\mid M})$ and a purview $(P,\D_{\mid P}, T_{\mid P})$, the \emph{cause} and \emph{effect} are processes 
+%$$cau\: M \to P \text{ and } eff\: M\to P$$
+%that capture the way the previous and next state of $P$ is constrained by the restricted state $s_{\mid M}$. We require that both $cau$ and $eff$ send causal states to causal states. One example of such a cause process is 
+%$$cau\: M \overset{1\otimes w_{M'}}\to M\otimes M' \simeq S \overset{T}\to S \simeq P\otimes P' \overset{1\otimes q_{P'}}\to P,$$
+%where $M'$ and $P'$ are the complements in the decompositions defined by $M$ and $P$ respectively.
