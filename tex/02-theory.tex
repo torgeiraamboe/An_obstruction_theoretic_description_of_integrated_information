@@ -68,9 +68,11 @@ We will use the notation $T^{\psi, \delta}$, with $\delta \in \{\leftarrow, \rig
 
 In this section we present the more novel parts of this paper, which is a cohomology theory for IIT systems. We then build an obstruction theory for decomposing a physical system based on this cohomology theory, and show that it detects the existence of integrated information. Lastly we extend this to naturally define higher order integration, often referred to as higher \emph{synergy}. 
 
-Our setup is formally analogous to Abramsky--Brandenburger's sheaf theoretic description of contextuality, see \citeme and \citeme, but differs in the added dynamics of the systems. However, we feel that the similarities are enticing, and that the possible interactions are worth further studies. 
+\begin{remark}
+    Our setup is formally analogous to Abramsky--Brandenburger's sheaf theoretic description of contextuality, see \citeme and \citeme, but differs in the added dynamics of the systems. However, we feel that the similarities are enticing, and that the possible interactions are worth further studies. 
 %https://iopscience.iop.org/article/10.1088/1367-2630/13/11/113036
 %https://arxiv.org/abs/2011.04899
+\end{remark}
 
 Given a system type $(S, \D, T)$ and a global state $s\: \1 \to S$, we define the category of subsystems of $S$ to be the poset category defined by the poset structure in \citeme. In other words, $\Sub(S)$ is the category consisting of subsystems as objects, and morphisms being single comparison maps by the preorder structure. 
 % appendix in Tull-Kleiner. 
@@ -101,7 +103,9 @@ where $V$ is the complement of $U$, i.e. the object such that $A\simeq U\otimes 
 Given a system state $(S, \D, T)$ and state $s\: \1 \to S$, we define the \emph{integrated cohomology} of $(S, \D, T)$ to be the $\F$-valued presheaf cohomology of the nerve of $\Sub(S)$:
 $$H^k_{int}(S) := H^k(N^\bullet(\Sub(S));\F).$$
 
-It is important to note that this is not simply the topological nerve cohomology of $\Sub(S)$, as this will almost always be trivial. The important part here is the use of the presheaf $\F$, which makes this a highly non-trivial cohomology theory. 
+\begin{remark}
+    It is important to note that this is not simply the topological nerve cohomology of $\Sub(S)$, as this will almost always be trivial. The important part here is the use of the presheaf $\F$, which makes this a highly non-trivial cohomology theory. 
+\end{remark}
 
 The intuition is as follows: The nerve of $\Sub(S)$ gives us the geometric construction \emph{where} integrated information can be tested. It consists formally of chains of substates of $S$ of all lengths, with topological structure that understands how these chains are related and connected. The presheaf gives us \emph{what} is measured on every level -- in our case the system dynamics. The cohomology gives us information about which local dynamics that can be glued together to form a global dynamic. If gluing fails, then there is some level of the system where its global dynamics cannot be described in terms of local dynamics, which is the essence of the system having integrated information. 
 
@@ -118,7 +122,7 @@ The reader paying minute attention has perhaps noticed that mechanisms and purvi
 The goal of this section is to prove the following theorem.
 
 \begin{theorem}
-    Let $(S, \D, T)$ be a system state and $s\: \1\to S$ a state of $S$. If there is no integrated information in $S$, then all of the decomposition obstruction classes vanish. In other words, $\Phi(S)=0 \implies [\Delta^{\psi, \delta}(A)] = 0$ for all $A$, $\psi$ and $\delta$. In particular, this means that the existence of non-vanishing obstruction classes implies $\Phi(S)>0$, and hence that the classes $[\Delta^{\psi, \delta}(A)]$ form actual obstructions to the decomposition of causal structures. 
+    Let $(S, \D, T)$ be a system state and $s\: \1\to S$ a state of $S$. If there is no integrated information in $S$, then all of the decomposition obstruction classes vanish. In other words, $\Phi(S)=0 \implies [\Delta^{\psi, \delta}(A)] = 0$ for all $A$, $\psi$ and $\delta$. In particular, the existence of non-vanishing obstruction classes implies $\Phi(S)>0$, and hence that the classes $[\Delta^{\psi, \delta}(A)]$ form obstructions to the decomposition of causal structures. 
 \end{theorem}
 
 In order to do so we need to be able to compute and understand $\Phi$. We will use the method of \emph{generalized IIT's} as developed by Tull--Kleiner in \citeme. This ensures that our theory works not only for classical IIT, but also quantum IIT and other variants that one would like to study, \citeme. 
@@ -139,9 +143,10 @@ Given a mechanism-purview pair $M$, $P$ we denote the combined decomposition set
 $$\D_{\mid M, P} = \D_{\mid M}\times \D_{\mid P}.$$
 The trivial decomposition is the product of the trivial decompositions of $M$ and $P$, i.e., $((M, \1), (P, \1))$. 
 
-We can now define \emph{case-effect repertoirs} of a system $S$, which are defined as an assignment of an experience space $\E(S)$, as well as for each state $s\:\1\to S$ and for each mechanism-purview pair $M$, $P$ two elements $cau_s(M,P)$ and $eff_s(M,P)$ in $\E(S)$ together with two decomposition maps from 
+We can now define \emph{cause-effect repertoirs} of a system $S$, which are defined as an assignment of an experience space $\E(S)$, as well as for each state $s\:\1\to S$ and for each mechanism-purview pair $M$, $P$ two elements $cau_s(M,P)$ and $eff_s(M,P)$ in $\E(S)$ together with two decomposition maps from 
 $$cau, eff\: \D_{\mid M, P} \to \E(S)$$
 sending the trivial decomposition to the chosen elements, i.e. $cau((M,\1), (P,\1))= cau_s(M,P)$ and similarly for $eff$. 
+
 
 
 
