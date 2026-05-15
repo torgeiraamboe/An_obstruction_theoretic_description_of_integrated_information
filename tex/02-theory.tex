@@ -89,7 +89,7 @@ and the \emph{double cut} by
 $$T^{\psi, \leftrightarrow}\: A\otimes B \overset{1\otimes w_A\otimes w_B\otimes 1}\to A\otimes B\otimes A\otimes B \overset{T\otimes T}\to A\otimes B \otimes A \otimes B \overset{1\otimes q_B\otimes q_A\otimes 1}\to A\otimes B.$$
 
 \begin{remark}
-    The $A$-$B$-cut corresponds to Tull--Kleiner's bidirectional cut, where one evolves the system as if $A$ and $B$ were completely disconnected from each other. 
+    The double cut corresponds to Tull--Kleiner's bidirectional cut, where one evolves the system as if $A$ and $B$ were completely disconnected from each other. 
 \end{remark}
 
 We will use the notation $T^{\psi, \alpha}$, with $\alpha \in \{\leftarrow, \rightarrow, \leftrightarrow\}$ to denote a general disconnection based on a decomposition $\psi\: S\simeq A\otimes B$. As we did above with the restricted time evolution, we also get definitions of restricted cuts due to the functoriality of discarding and noise; these are denoted $T^{\psi, \alpha}_{\mid A}$.  
@@ -101,6 +101,27 @@ We will use the notation $T^{\psi, \alpha}$, with $\alpha \in \{\leftarrow, \rig
 
 In this section we present the more novel parts of this paper, which is a cohomology theory for IIT systems. We then build an obstruction theory for decomposing a physical system based on this cohomology theory, and show that it detects the existence of integrated information. Lastly we extend this to naturally define higher order integration, often referred to as higher \emph{synergy}. 
 
+\subsection{Prerequisites}
+In essence, cohomology groups are mathematical constructions that measure the amount of holes of different dimensions a space or other mathematical object has. It is generally defined using homological algebra, see \citeme for an introduction. 
+
+\begin{definition}
+    A \emph{cochain complex} $C^\bullet$ is a sequence of abelian groups 
+    \[\cdots \to C^{i-1} \overset{\delta^{i-1}}\to C^i \overset{\delta^i}\to C^{i+1} \to \cdots\]
+    such that $\delta^{i-1}\circ \delta^i = 0$ for all $i$.
+\end{definition}
+
+The the elements of $C^\bullet$ are called the $i$-cochains. An $i$-cochain in the image of the map $\delta^{i-1}$ is called a coboundary, while an $i$-cochain in the kernel of $\delta^i$ is called a cocycle. The equation $\delta^{i-1}\circ \delta^i = 0$ implies that $\Ima(\delta^{i-1})\subseteq \Ker(\delta^i)$, which is the fundamental fact used to define cohomology -- in words, any coboundary is also a cocycle. 
+
+\begin{definition}
+    Given a cochain complex $C^\bullet$, its $i$'th \emph{cohomology group} is defined as the quotient group
+    \[H^i(C^\bullet) := \Ker(\delta^{i})/\Ima(\delta^{i-1}).\]
+    Elements of $H^i(C^\bullet)$ are called \emph{cohomology classes}. 
+\end{definition}
+
+One of the central goals of algebraic topology and algebraic geometry is to functorially assign cochain complexes to topological and geometric objects and compute the resulting homology groups. For a category of interest $\C$, for example topological spaces, manifolds or schemes, such assignments defines functors into the category of graded abelian groups $H^*\: \C \to \Ab_*$ called \emph{cohomology theories}. Examples include \emph{simplicial cohomology} \citeme, \emph{de Rham cohomology} \citeme and \emph{coherent cohomology} \citeme. 
+
+
+\subsection{Integrated cohomology}
 Given a system $(S, \D, T)$ and a global state $s\: \1 \to S$, we will denote by $\Sub_s(S)$ the category of subsystems of $S$, defined as the poset category associated to the poset structure in \citeme. In other words, $\Sub_s(S)$ is the category consisting of subsystems as objects, and morphisms being single comparison maps by the preorder structure. 
 % appendix in Tull-Kleiner. 
 
@@ -132,6 +153,7 @@ As we want to have access to the time evolutions $T$ and $T^{\psi, \alpha}$ for 
     Our setup is formally analogous to Abramsky--Brandenburger's sheaf theoretic description of contextuality, see \citeme and \citeme, but differs in the added dynamics of the systems. However, we feel that the similarities are enticing, and that the possible interactions are worth further investigation. 
 %https://iopscience.iop.org/article/10.1088/1367-2630/13/11/113036
 %https://arxiv.org/abs/2011.04899
+% S. Abramsky, S. Mansfield and R. Soares Barbosa, The Cohomology of Non-Locality and Contextuality, in Proceedings of QPL 2011, Electronic Proceedings in Theoretical Computer Science, 2011.
 \end{remark}
 
 \begin{remark}
@@ -139,11 +161,40 @@ As we want to have access to the time evolutions $T$ and $T^{\psi, \alpha}$ for 
     One could also naturally choose to use the actual state $s_{\mid V}$ instead of the noise state $w_V$ in the definition of the restriction maps. Doing this would mean that the obstruction theory detects state-dependent integration, and not the intrinsic integration of the system. We believe that studying what happens upon making this change is an interesting avenue of future research. 
 \end{remark}
 
+\begin{definition}[{\citeme}]
+    Let $\C$ be a category. The \emph{nerve} of $\C$ is the simplicial complex $N^\bullet(\C)$ defined by having a $0$-simplex for each object in $\C$, a $1$-simplex for each morphism in $\C$, a $2$-simplex for every pair of composable morphisms, and generally an $k$-simplex $c_0\rightarrow c_1 \rightarrow \cdots \rightarrow c_k$ for any $k$-tuple of composable morphisms. For $0<i<k$ the $i$'th face maps $f_i$ are given by composing the two maps, while for $i=0,k$ it is given by omitting the first or last object respectively. The $i$'th degeneracy map $d_i$ is given by inserting an identity map at the $i$'th object.
+\end{definition}
+
+The nerve of a category is a way of encoding how all objects in the category are related to each other via a combinatorial space. Given a presheaf $\F$ on the category $\C$, one gets a cochain complex 
+\[C^i(\C;\F) = \prod_{c_0\rightarrow \cdots \rightarrow c_i}\F(c_0),\]
+where the coboundary map $\delta^k\: C^k(\C;\F) \to C^{k+1}(\C;\F)$ is defined on an $k$-cochain $\theta$ by the alternating sum
+\[\delta^k(\theta) = \sum_{i=0}^{k+1}(-1)^i d_i(\theta).\]
+More explicitly, on a $k+1$-simplex $\sigma = c_0\rightarrow c_1 \rightarrow \cdots \rightarrow c_{k+1}$ we have 
+\begin{align*}
+    d_0(\theta)(c_0\rightarrow c_1 \rightarrow \cdots \rightarrow c_{k+1})
+    &= \rho_{c_0\rightarrow c_1}(\theta)(c_1\rightarrow c_2 \rightarrow \cdots \rightarrow c_{k+1})
+    &= \F(c_0\to c_1)(\theta)(c_1\rightarrow c_2 \rightarrow \cdots \rightarrow c_{k+1})
+\end{align*}
+and for $i>0$, 
+\[d_i(\theta)(c_0\rightarrow \cdots \widehat{c_i}\rightarrow \cdots \rightarrow c_{k+1})\]
+where $\widehat{c_i}$ denotes the $i$'th object being omitted. 
+
+\begin{remark}
+    The above definition of the coboundary operator is completely analogous to the boundary operator for \v{C}ech cohomology, see \citeme. 
+\end{remark}
+
+Important for us will be the coboundary of a $0$-cochain $\theta$, which is given on a $1$-simplex $\sigma\: U\to V$ as
+\begin{align*}
+    \delta^0 \theta (\sigma) 
+    &= \rho_{\sigma}(\theta(V))-\theta(U)    
+    &= \F(\sigma)(\theta(V)) - \theta(U).   
+\end{align*}
+
 We can now define the cohomology theory that we will use to define the obstruction classes. 
 
 \begin{definition}
-    Given a system $(S, \D, T)$ and a state $s\: \1 \to S$, we define the \emph{integrated cohomology} of $(S, \D, T)$ to be the $\F$-valued simplicial cohomology of the nerve of $\Sub_s(S)$. In other words,
-    $$H^k_{int}(S) := H^k(N^\bullet(\Sub_s(S));\F).$$
+    Given a system $(S, \D, T)$ and a state $s\: \1 \to S$, we define the \emph{integrated cohomology} of $(S, \D, T)$ to be the cohomology of the nerve of $\Sub_s(S)$ evaluated in the dynamic presheaf $\F$. In other words, the $i$'th integrated cohomology group is defined by
+    $$H^i_{int}(S) = H^i(N^\bullet(\Sub_s(S));\F) = \Ker(\delta^i)/\Ima(\delta^{i-1}).$$
 \end{definition}
 
 
@@ -151,12 +202,11 @@ We can now define the cohomology theory that we will use to define the obstructi
     It is important to note that this is not simply the topological nerve cohomology of $\Sub_s(S)$, as this will almost always be trivial, see for example \citeme. The important part here is the use of the presheaf $\F$, which makes this a highly non-trivial cohomology theory. 
 \end{remark}
 
-The intuition is as follows: The nerve of $\Sub_s(S)$ gives us a geometric construction of \emph{where} integrated information can be tested. It consists formally of chains of substates of $S$ of all lengths, with topological structure that understands how these chains are related and connected. The presheaf gives us \emph{what} is measured on every level -- in our case the system's causal dynamics. The cohomology gives us information about which local dynamics that can be glued together to form a global dynamic. If gluing fails, then there is some level of the system where its global dynamics cannot be described in terms of local dynamics, which is the essence of the system having integrated information. 
+The intuition is as follows: The nerve of $\Sub_s(S)$ gives us a geometric construction of \emph{where} integrated information can be tested. It consists formally of chains of substates of $S$ of all lengths, with topological structure that understands how these chains are related and connected. The presheaf gives us \emph{what} is measured on every level -- in our case the system's causal dynamics. The cohomology gives us information about which local dynamics that can be glued together to form a global dynamic. If gluing fails, then there is some level of the system where its global dynamics cannot be described in terms of local dynamics, which is the essence of the system having integrated information. In particular, a $1$-cocycle measures the failure of a pairwise compatability, which we use to define obstruction classes. 
 
 \begin{definition}
-    The \emph{decomposition obstruction classes} of $S$ are defined as the cohomology class of the cochains
-    $$\Delta^{\psi, \alpha}(A) = T_{\mid A} - T^{\psi, \alpha}_{\mid A}$$
-    for all substates $A$, decompositions $\psi$ and directions $\alpha \in \{\rightarrow, \leftarrow, \leftrightarrow\}$. 
+    Given a decomposition $\psi$ and a direction $\alpha \in \{\rightarrow, \leftarrow, \leftrightarrow\}$, its associated \emph{obstruction class} is defined as the cohomology class of the $1$-cochain $\Delta^{\psi, \alpha}$ defined on $1$-simplicies $\sigma\: U\to V$ as 
+    \[\Delta^{\psi,\alpha}(\sigma) = \F(\sigma)(T_{|U}) - T^{\psi,\alpha}_{|V}.\]
 \end{definition}
 
 The central claim of this paper is that these classes detect whether a system $S$ has integrated information or not. Hence, checking that these classes vanish proves that integrated information is non-zero, which might be much easier than computing $\Phi$, which can be a very hard task -- see \citeme. 
@@ -172,7 +222,7 @@ The goal of this section is to prove the following theorem.
 
 \begin{theorem}
     \label{thm:obstructions-and-IIT}
-    Let $(S, \D, T)$ be a system state and $s\: \1\to S$ a state of $S$. If there is no integrated information in $S$, then all of the decomposition obstruction classes vanish. In other words, $\Phi(S,s)=0 \implies [\Delta^{\psi, \alpha}(A)] = 0$ for all $A$, $\psi$ and $\alpha$. In particular, the existence of non-vanishing obstruction classes implies $\Phi(S,s)>0$, and hence that the classes $[\Delta^{\psi, \alpha}(A)]$ form obstructions to the decomposition of causal structures. 
+    Let $(S, \D, T)$ be a system and $s\: \1\to S$ a state of $S$. If there is no integrated information in $S$, then all of the decomposition obstruction classes vanish. In other words, $\Phi(S,s)=0 \implies [\Delta^{\psi, \alpha}] = 0$ for all $A$, $\psi$ and $\alpha$. In particular, the existence of non-vanishing obstruction classes implies $\Phi(S,s)>0$, and hence that the classes $[\Delta^{\psi, \alpha}]$ form obstructions to the decomposition of causal structures. 
 \end{theorem}
 
 In order to do so we need to be able to compute and understand $\Phi$. We will use the method of \emph{generalized IIT's} as developed by Tull--Kleiner in \citeme, also formalized in the categorical setting in \citeme. This ensures that our theory works not only for classical IIT, but also quantum IIT and other variants that one would like to study, \citeme. 
@@ -185,28 +235,28 @@ Intuitively a mechanism describes the subset of $S$ that we are ``letting make a
 
 \begin{definition}
     Given a mechanism $(M, \D_{\mid M}, T_{\mid M})$ and a purview $(P,\D_{\mid P}, T_{\mid P})$, we define the \emph{cause} to be process 
-    $$cau\: M \overset{1\otimes w_{M'}}\to M\otimes M' \simeq S \overset{T}\to S \simeq P\otimes P' \overset{1\otimes q_{P'}}\to P,$$
+    $$\cau\: M \overset{1\otimes w_{M'}}\to M\otimes M' \simeq S \overset{T}\to S \simeq P\otimes P' \overset{1\otimes q_{P'}}\to P,$$
     where $M'$ and $P'$ are the complements in the decompositions defined by $M$ and $P$ respectively. Similarly, the \emph{effect} is defined as
-    $$eff\: M \overset{1\otimes w_{M'}}\to M\otimes M' \simeq S \overset{T^\dagger}\to S \simeq P\otimes P' \overset{1\otimes q_{P'}}\to P.$$
+    $$\eff\: M \overset{1\otimes w_{M'}}\to M\otimes M' \simeq S \overset{T^\dagger}\to S \simeq P\otimes P' \overset{1\otimes q_{P'}}\to P.$$
 \end{definition}
 
-Note that both $cau$ and $eff$ send causal states to causal states. Intuitively, these capture the way the previous and next state of $P$ is constrained by the restricted state $s_{\mid M}$.  When the mechanism is the unit $\1$, then the cause and effect $cau, eff\: \1\to P$ are respectively called the \emph{unconstrained cause}, denoted $ucau$ and the \emph{unconstrained effect}, denoted $ueff$. 
+Note that both $\cau$ and $\eff$ send causal states to causal states. Intuitively, these capture the way the previous and next state of $P$ is constrained by the restricted state $s_{\mid M}$.  When the mechanism is the unit $\1$, then the cause and effect $\cau, \eff\: \1\to P$ are respectively called the \emph{unconstrained cause}, denoted $u\cau$ and the \emph{unconstrained effect}, denoted $u\eff$. 
 
 \begin{definition}
     Given a state $s$ and a mechanism-purview pair $M,P$, the associated \emph{cause repertoir} is defined to be the state 
-    $$cau(s,M,P) = \1\overset{s_{\mid M}}\to M \overset{cau \otimes ucau}\to P\otimes P' \simeq S.$$
-    One defines an \emph{effect repertoir} $eff(s,M,P)$ similarly. 
+    $$\cau(s,M,P) = \1\overset{s_{\mid M}}\to M \overset{\cau\otimes u\cau}\to P\otimes P' \simeq S.$$
+    One defines an \emph{effect repertoir} $\eff(s,M,P)$ similarly. 
 \end{definition}
 
 We also need to decompose and cut causes and effects.  
 
 \begin{definition}
     Given a decomposition $(M_1, M_2)$ of a mechanism $M$, and a decomposition $(P_1, P_2)$ of a purview $P$, the \emph{decomposed} cause is the process 
-    $$cau_{M_1, M_2}^{P_1, P_2} \: M \simeq M_1\otimes M_2 \overset{cau\otimes cau}\to P_1\otimes P_2 \simeq P,$$
+    $$\cau_{M_1, M_2}^{P_1, P_2} \: M \simeq M_1\otimes M_2 \overset{\cau\otimes \cau}\to P_1\otimes P_2 \simeq P,$$
     and again similarly for defining the \emph{decomposed} effect.
 \end{definition}
 
-The \emph{decomposed} cause and effect repertoirs are then defined similarly to the normal ones, by replacing $cau$ and $eff$ with their decomposed variants in the definitions. We denote these states by $cau_{M_1, M_2}^{P_1, P_2}(s,M,P)$ and $eff_{M_1, M_2}^{P_1, P_2}(s,M,P)$ respectively. Given a cut direction $\alpha$, the \emph{cut} cause and effect repertoirs $cau^\alpha(s,M,P)$ and $eff^\alpha(s,M,P)$ is similarly defined by using the cut time evolution $T^{\psi, \alpha}$, where $\psi$ is the decomposition associated to the mechanism $M$. Combining the two approaches yields also \emph{cut-decomposed} cause and effect repertoirs. 
+The \emph{decomposed} cause and effect repertoirs are then defined similarly to the normal ones, by replacing $\cau$ and $\eff$ with their decomposed variants in the definitions. We denote these states by $\cau_{M_1, M_2}^{P_1, P_2}(s,M,P)$ and $\eff_{M_1, M_2}^{P_1, P_2}(s,M,P)$ respectively. Given a cut direction $\alpha$, the \emph{cut} cause and effect repertoirs $\cau^\alpha(s,M,P)$ and $\eff^\alpha(s,M,P)$ is similarly defined by using the cut time evolution $T^{\psi, \alpha}$, where $\psi$ is the decomposition associated to the mechanism $M$. Combining the two approaches yields also \emph{cut-decomposed} cause and effect repertoirs. 
 
 For a generalized IIT, one needs to be able to compare causes and effects along different substructures. This is done by assuming that there is a distance function on the states of $S$:
 $d(-,-)\: \St(S)\times \St(S) \to \R^+.$
@@ -215,18 +265,18 @@ As in \citeme, we do not require this to be a metric, though it usually will be 
 We now have enough data to define the IIT-algoritm, as presented in \citeme and \citeme. The algorithm defines integration for all cause and effect repertoirs, and uses this to aggregate upwards to an integration value for the total system $S$.  
 
 \begin{definition}
-    Let $cau(s,M,P)$ be a cause repertoir. Its \emph{integration} of is defined as the minimum distance from $cau(s,M,P)$ to a decomposed repertoir associated to a non-trivial decomposition: 
-    $$\phi(cau(s,M,P)) := \min_{(M_1, M_2), (P_1, P_2)} d(cau(s,M,P), cau_{M_1, M_2}^{P_1, P_2}(s,M,P)).$$
-    We define the integration level of an effect repertoir $eff(s,M,P)$ similarly. 
+    Let $\cau(s,M,P)$ be a cause repertoir. Its \emph{integration} of is defined as the minimum distance from $\cau(s,M,P)$ to a decomposed repertoir associated to a non-trivial decomposition: 
+    $$\phi(\cau(s,M,P)) := \min_{(M_1, M_2), (P_1, P_2)} d(\cau(s,M,P), \cau_{M_1, M_2}^{P_1, P_2}(s,M,P)).$$
+    We define the integration level of an effect repertoir $\eff(s,M,P)$ similarly. 
 \end{definition}
 
 \begin{definition}
-    Given a state $s\:\1\to S$ and a sub-system $M\in \Sub_s(S)$, the \emph{core cause} is the sub-system $P^{cc}\in \Sub_s(S)$ such that the associated cause repertoir $cau(s,M,P)$ has maximal integration. Similarly, the \emph{core effect} is the sub-system $P^{ce}$ that maximizes the integration of the associated effect repertoir $eff(s,M,P)$.    
+    Given a state $s\:\1\to S$ and a sub-system $M\in \Sub_s(S)$, the \emph{core cause} is the sub-system $P^{cc}\in \Sub_s(S)$ such that the associated cause repertoir $\cau(s,M,P)$ has maximal integration. Similarly, the \emph{core effect} is the sub-system $P^{ce}$ that maximizes the integration of the associated effect repertoir $\eff(s,M,P)$.    
 \end{definition}
 
 \begin{definition}
     The integration of a mechanism $M$ is then defined as 
-    $$\phi(M) := \min(\phi(cau(s,M,P^{cc})), \phi(eff(s,M,P^{ce}))).$$
+    $$\phi(M) := \min(\phi(\cau(s,M,P^{cc})), \phi(\eff(s,M,P^{ce}))).$$
 \end{definition}
 
 Given a sub-object $M\in \Sub_s(S)$, the triple consisting of the core cause repertoir, the core effect repertoir and the resulting integration defines the \emph{concept} of $M$. Allowing $M$ to vary, defines the \emph{$Q$-shape} of the state $s$. The collection of all $Q$-shapes defines the \emph{experience space} $\E(S)$ of the system $S$. See \citeme for the details. 
@@ -241,16 +291,16 @@ If this $\Phi$-value is zero, then it means that for all mechanisms $M$, the int
 
 \begin{lemma}
     \label{lm:no-integration-then-cuts-are-equal}
-    Let $(S, \D, T)$ be a system, $s\:\1\to S$ a state of $S$, $(A,B,\psi)$ a decomposition and $\alpha$ a cut direction. If $\Phi(S,s)=0$, then for every sub-system $U\in \Sub_s(S)$ the restricted global dynamics $T_{\mid U}$ and the restricted cut-dynamics $T^{\psi,\alpha}_{\mid U}$ are equal in $\F(U)$.  
+    Let $(S, \D, T)$ be a system, $s\:\1\to S$ a state of $S$, $(A,B,\psi)$ a decomposition and $\alpha$ a cut direction. If $\Phi(S,s)=0$, then for every sub-system $U\in \Sub_s(S)$ the restricted dynamics $T_{\mid U}$ and the restricted cut-dynamics $T^{\psi,\alpha}_{\mid U}$ are equal in $\F(U)$.  
 \end{lemma}
 \begin{proof}
-    By definition there is a complement $U'$ of $U$ such that $(U,U')$ is a decomposition of $S$. We consider $U$ as a mechanism, with purview the total system $S$. The associated cause repertoir $cau(s,U,S)$ is equivalent to the composite
+    By definition there is a complement $U'$ of $U$ such that $(U,U')$ is a decomposition of $S$. We consider $U$ as a mechanism, with purview the total system $S$. The associated cause repertoir $\cau(s,U,S)$ is equivalent to the composite
     $$\1\overset{s_{\mid U}}\to U \overset{T_{\mid U}}\to U \overset{1_U \otimes w_{U'}}\to U\otimes U' \cong S.$$
     The same description holds for the cut-decomposed cause repertoir $cau_{U,U'}^{\1,S,\alpha}(s,U,S)$, i.e., it is equivalent to the composite 
     $$\1 \overset{s_{\mid U}}\to U \overset{T_{\mid U}^{\psi, \alpha}}\to U \overset{1_U \otimes w_{U'}}\to U\otimes U' \cong S.$$
     As the embedding $\End(U)\hookrightarrow \End(U)$ defined by $f\mapsto (\Id_U\otimes w_{U'})\circ f\circ s_{\mid U}$ is injective in the image $\F(U)$, equality of the cause repertoirs implies equality of the underlying endomorphisms of $U$. In particular, the restricted endomorphisms $T_{\mid U}$ and $T_{\mid U}^{\psi, \alpha}$ are equal if and only if the associated cause repertoirs are equal. 
 
-    Now, by assumption we have $\Phi(S,s)=0$, which by definition means we have non-trivial decompositions of $U$ and $S$ such that either the cause or effect repertoir factorizes. Without loss of generality we assume this to be the cause repertoir: $cau(s,U,S)=cau_{U_1,U_2}^{S_1,S_2}(s,U,S)$. By construction, the cut time evolutions and the cause and effect maps are defined by inserting noise on complements. Hence, this equivalence on cause repertoirs implies that the action of $T$ on $U$ is the same as the restricted action of $T^{\psi, \alpha}$. 
+    Now, by assumption we have $\Phi(S,s)=0$, which by definition means we have non-trivial decompositions of $U$ and $S$ such that either the cause or effect repertoir factorizes. Without loss of generality we assume this to be the cause repertoir: $\cau(s,U,S)=cau_{U_1,U_2}^{S_1,S_2}(s,U,S)$. By construction, the cut time evolutions and the cause and effect maps are defined by inserting noise on complements. Hence, this equivalence on cause repertoirs implies that the action of $T$ on $U$ is the same as the restricted action of $T^{\psi, \alpha}$. 
     
     Given a $1$-simplex $\sigma \: U\to V$ we then have $\F(\sigma)(T) = \F(T^{\psi, \alpha})$, which by definition implies that $T_{\mid U}$ and $T_{\mid U}^{\psi, \alpha}$ are equivalent in $\F(U)$. 
 \end{proof}
@@ -260,16 +310,16 @@ If this $\Phi$-value is zero, then it means that for all mechanisms $M$, the int
 \end{remark}
 
 \begin{proof}[Proof of \cref{thm:obstructions-and-IIT}]
-    The assumption that $\Phi(S,s) = 0$ implies by definition that for all mechanisms $M$, we have 
-    $$\phi(M) = \min(\phi(cau(s,M,P^{cc})), \phi(eff(s,M,P^{ce}))) = 0.$$
+    The assumption of vanishing integrated information $\Phi(S,s) = 0$ implies by definition that for all mechanisms $M$, we have 
+    $$\phi(M) = \min(\phi(\cau(s,M,P^{cc})), \phi(\eff(s,M,P^{ce}))) = 0.$$
     In particular, for all mechanism-purview pairs $M,P$, there exists decompositions $M\simeq M_1\otimes M_2$ and $P\simeq P_1\otimes P_2$ such that either 
-    $$cau(s,M,P)=cau_{M_1, M_2}^{P_1, P_2}(s,M,P),$$
+    $$\cau(s,M,P)=\cau_{M_1, M_2}^{P_1, P_2}(s,M,P),$$
     or 
-    $$eff(s,M,P)=eff_{M_1, M_2}^{P_1, P_2}(s,M,P).$$ 
+    $$\eff(s,M,P)=\eff_{M_1, M_2}^{P_1, P_2}(s,M,P).$$ 
     The goal is to exploit this fact to show that all obstruction classes are coboundaries. To accomplish this, we fix a decomposition $\psi\: S\simeq A\otimes B$ and a cut direction $\alpha \in \{\rightarrow, \leftarrow, \leftrightarrow\}$. To show that the associated obstruction class $[\Delta^{\psi, \alpha}]=0$ it suffices to show that it is a coboundary of some $0$-cochain $\theta$, in other words that $\Delta^{\psi, \alpha} = \delta \theta$. 
 
-    We define this cochain by $\theta(U) := T_{\mid U}$ for all $U\in \Sub_s(S)$. The coboundary is given on a $1$-simplex $\sigma\:U\hookrightarrow V$ by
-    $$\delta \theta (\sigma) = \F(\sigma)(T_{\mid V}) - T{\mid U}.$$
+    We define this cochain by $\theta(U) := T_{\mid U}$ for all $U\in \Sub_s(S)$. The coboundary is given on a $1$-simplex $\sigma\:U\to V$ by
+    $$\delta \theta (\sigma) = \F(\sigma)(T_{\mid V}) - T_{\mid U}.$$
     By \cref{lm:no-integration-then-cuts-are-equal} we have $\F(\sigma)(T_{\mid V}) = \F(\sigma)(T_{\mid V}^{\psi, \alpha}) = T_{\mid U}^{\psi, \alpha}$, hence $\delta \theta (\sigma) = -\Delta^{\psi, \alpha}(U)$. In particular, $\Delta^{\psi, \alpha} = -\delta \theta$, so the obstruction is a coboundary, meaning that $[\Delta^{\psi, \alpha}] = 0$ in the integrated cohomology group $H_{int}^1(S)$.
 \end{proof}
 
@@ -301,7 +351,7 @@ If this $\Phi$-value is zero, then it means that for all mechanisms $M$, the int
 
 %\begin{definition}
 %    A \emph{cause-effect repertoir} of a system $S$ is an assignment of an experience space $\E(S)$, as well as for each state $s\:\1\to S$ and for each mechanism-purview pair $M$, $P$ two elements $cau_s(M,P)$ and $eff_s(M,P)$ in $\E(S)$ together with two decompositions
-%    $$cau, eff\: \D_{\mid M, P} \to \E(S)$$
+%    $$\cau, \eff\: \D_{\mid M, P} \to \E(S)$$
 %    along the combined decomposition set.
 %\end{definition}
 
@@ -313,12 +363,11 @@ If this $\Phi$-value is zero, then it means that for all mechanisms $M$, the int
 
 
 %Given a mechanism $(M, \D_{\mid M}, T_{\mid M})$ and a purview $(P,\D_{\mid P}, T_{\mid P})$, the \emph{cause} and \emph{effect} are processes 
-%$$cau\: M \to P \text{ and } eff\: M\to P$$
+%$$\cau\: M \to P \text{ and } \eff\: M\to P$$
 %that capture the way the previous and next state of $P$ is constrained by the restricted state $s_{\mid M}$. We require that both $cau$ and $eff$ send causal states to causal states. One example of such a cause process is 
-%$$cau\: M \overset{1\otimes w_{M'}}\to M\otimes M' \simeq S \overset{T}\to S \simeq P\otimes P' \overset{1\otimes q_{P'}}\to P,$$
+%$$\cau\: M \overset{1\otimes w_{M'}}\to M\otimes M' \simeq S \overset{T}\to S \simeq P\otimes P' \overset{1\otimes q_{P'}}\to P,$$
 %where $M'$ and $P'$ are the complements in the decompositions defined by $M$ and $P$ respectively.
 
 
 
-\subsection{Higher order integration}
 
