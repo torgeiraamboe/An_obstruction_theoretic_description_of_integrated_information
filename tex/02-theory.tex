@@ -84,9 +84,14 @@ Given a system $(S, \D, T)$ and a decomposition $(A, B, \psi) \in \D$, one needs
 In spirit this forces the time evolution to retain all self-influences from $A$, and influences from $A$ to $B$, but removes all influences from $B$ to $A$. The arrow in the notation is meant to denote the direction that is removed. 
 
 We define the \emph{right cut} similarly by replacing $T$ with
-$$T^{\psi,\rightarrow}\: A\otimes B \overset{w_A q_A\otimes 1}\to A\otimes B \overset{T}\to A\otimes B,$$
-and the \emph{double cut} by
-$$T^{\psi, \leftrightarrow}\: A\otimes B \overset{1\otimes w_A\otimes w_B\otimes 1}\to A\otimes B\otimes A\otimes B \overset{T\otimes T}\to A\otimes B \otimes A \otimes B \overset{1\otimes q_B\otimes q_A\otimes 1}\to A\otimes B.$$
+\[T^{\psi,\rightarrow}\: A\otimes B \overset{w_A q_A\otimes 1}\to A\otimes B \overset{T}\to A\otimes B,\]
+and the \emph{double cut} by the diagram 
+\begin{center}
+\begin{tikzcd}
+A\otimes B \arrow[d, "1\otimes w_A\otimes w_B\otimes 1"'] \arrow[r, "{T^{\psi, \leftrightarrow}}"] & A\otimes B                                                                  \\
+A\otimes B\otimes A\otimes B \arrow[r, "T\otimes T"]                                               & A\otimes B\otimes A\otimes B \arrow[u, "1\otimes q_B\otimes q_A\otimes 1"']
+\end{tikzcd}
+\end{center}
 
 \begin{remark}
     The double cut corresponds to Tull--Kleiner's bidirectional cut, where one evolves the system as if $A$ and $B$ were completely disconnected from each other. 
@@ -169,14 +174,13 @@ The nerve of a category is a way of encoding how all objects in the category are
 \[C^i(\C;\F) = \prod_{c_0\rightarrow \cdots \rightarrow c_i}\F(c_0),\]
 where the coboundary map $\delta^k\: C^k(\C;\F) \to C^{k+1}(\C;\F)$ is defined on an $k$-cochain $\theta$ by the alternating sum
 \[\delta^k(\theta) = \sum_{i=0}^{k+1}(-1)^i d_i(\theta).\]
-More explicitly, on a $k+1$-simplex $\sigma = c_0\rightarrow c_1 \rightarrow \cdots \rightarrow c_{k+1}$ we have 
+More explicitly, on a $k+1$-simplex $\sigma = c_0\rightarrow \cdots \rightarrow c_{k}$ we have 
 \begin{align*}
-    d_0(\theta)(c_0\rightarrow c_1 \rightarrow \cdots \rightarrow c_{k+1})
-    &= \rho_{c_0\rightarrow c_1}(\theta)(c_1\rightarrow c_2 \rightarrow \cdots \rightarrow c_{k+1})
-    &= \F(c_0\to c_1)(\theta)(c_1\rightarrow c_2 \rightarrow \cdots \rightarrow c_{k+1})
+    d_0(\theta)(c_0\rightarrow \cdots \rightarrow c_{k})
+    &= \rho_{c_0}^{c_1}(\theta)(c_1\rightarrow \cdots \rightarrow c_{k})
 \end{align*}
-and for $i>0$, 
-\[d_i(\theta)(c_0\rightarrow \cdots \widehat{c_i}\rightarrow \cdots \rightarrow c_{k+1})\]
+and similarly for $k$. For $i>0$ we have 
+\[d_i(\theta)(c_0\rightarrow \cdots \widehat{c_i}\rightarrow \cdots \rightarrow c_{k}),\]
 where $\widehat{c_i}$ denotes the $i$'th object being omitted. 
 
 \begin{remark}
@@ -186,8 +190,7 @@ where $\widehat{c_i}$ denotes the $i$'th object being omitted.
 Important for us will be the coboundary of a $0$-cochain $\theta$, which is given on a $1$-simplex $\sigma\: U\to V$ as
 \begin{align*}
     \delta^0 \theta (\sigma) 
-    &= \rho_{\sigma}(\theta(V))-\theta(U)    
-    &= \F(\sigma)(\theta(V)) - \theta(U).   
+    &= \rho_U^V(\theta(V))-\theta(U)  
 \end{align*}
 
 We can now define the cohomology theory that we will use to define the obstruction classes. 
@@ -206,10 +209,18 @@ The intuition is as follows: The nerve of $\Sub_s(S)$ gives us a geometric const
 
 \begin{definition}
     Given a decomposition $\psi$ and a direction $\alpha \in \{\rightarrow, \leftarrow, \leftrightarrow\}$, its associated \emph{obstruction class} is defined as the cohomology class of the $1$-cochain $\Delta^{\psi, \alpha}$ defined on $1$-simplicies $\sigma\: U\to V$ as 
-    \[\Delta^{\psi,\alpha}(\sigma) = \F(\sigma)(T_{|U}) - T^{\psi,\alpha}_{|V}.\]
+    \[\Delta^{\psi,\alpha}(\sigma) = \rho_U^V(T_{|V}) - T^{\psi,\alpha}_{|U}.\]
 \end{definition}
 
 The central claim of this paper is that these classes detect whether a system $S$ has integrated information or not. Hence, checking that these classes vanish proves that integrated information is non-zero, which might be much easier than computing $\Phi$, which can be a very hard task -- see \citeme. 
+
+\begin{lemma}
+    The obstruction classes $\Delta^{\psi, \alpha}$ are cocycles. 
+\end{lemma}
+\begin{proof}
+    By definition we need to prove that $\delta^1 \Delta^{\psi, \alpha} = 0$. Let $\sigma = U\rightarrow V\rightarrow W$ be the $2$-simplex consisting of $1$-simplicies $\sigma_1\: U\rightarrow V$ and $\sigma_2 \: V\rightarrow W$. We have 
+    \[\delta^1 \Delta^{\psi, \alpha}(\sigma) = \rho_V^W(\Delta^{\psi, \alpha}(\sigma_2))-\Delta^{\psi, \alpha}(\sigma_2\circ \sigma_1)+\Delta^{\psi, \alpha}(\sigma_1).\]
+\end{proof}
 
 \begin{remark}
 The reader paying minute attention has perhaps noticed that mechanisms and purviews have yet to be featured in this framework. Our approach to measuring IIT is structurally somewhat different, as instead of starting with mechanisms and purviews and then aggregate local information upwards, we have the global structure as a reference and let mechanisms and purviews be derived observables. Hence they do not arise as primitive data, but as local test probes for evaluating the obstruction classes. We will, however, need to define and use these to relate our obstruction classes to the integrated information of $S$, as we will do in the following section.
@@ -222,7 +233,9 @@ The goal of this section is to prove the following theorem.
 
 \begin{theorem}
     \label{thm:obstructions-and-IIT}
-    Let $(S, \D, T)$ be a system and $s\: \1\to S$ a state of $S$. If there is no integrated information in $S$, then all of the decomposition obstruction classes vanish. In other words, $\Phi(S,s)=0 \implies [\Delta^{\psi, \alpha}] = 0$ for all $A$, $\psi$ and $\alpha$. In particular, the existence of non-vanishing obstruction classes implies $\Phi(S,s)>0$, and hence that the classes $[\Delta^{\psi, \alpha}]$ form obstructions to the decomposition of causal structures. 
+    Let $s$ be a state of a system $(S, \D, T)$. If there is no integrated information in $S$, then all of the decomposition obstruction classes vanish. In other words, 
+    \[\Phi(S,s)=0 \implies [\Delta^{\psi, \alpha}] = 0\] 
+    for all $A$, $\psi$ and $\alpha$. In particular, the existence of non-vanishing obstruction classes implies $\Phi(S,s)>0$, and hence that the classes $[\Delta^{\psi, \alpha}]$ form obstructions to the decomposition of causal structures. 
 \end{theorem}
 
 In order to do so we need to be able to compute and understand $\Phi$. We will use the method of \emph{generalized IIT's} as developed by Tull--Kleiner in \citeme, also formalized in the categorical setting in \citeme. This ensures that our theory works not only for classical IIT, but also quantum IIT and other variants that one would like to study, \citeme. 
@@ -258,15 +271,14 @@ We also need to decompose and cut causes and effects.
 
 The \emph{decomposed} cause and effect repertoirs are then defined similarly to the normal ones, by replacing $\cau$ and $\eff$ with their decomposed variants in the definitions. We denote these states by $\cau_{M_1, M_2}^{P_1, P_2}(s,M,P)$ and $\eff_{M_1, M_2}^{P_1, P_2}(s,M,P)$ respectively. Given a cut direction $\alpha$, the \emph{cut} cause and effect repertoirs $\cau^\alpha(s,M,P)$ and $\eff^\alpha(s,M,P)$ is similarly defined by using the cut time evolution $T^{\psi, \alpha}$, where $\psi$ is the decomposition associated to the mechanism $M$. Combining the two approaches yields also \emph{cut-decomposed} cause and effect repertoirs. 
 
-For a generalized IIT, one needs to be able to compare causes and effects along different substructures. This is done by assuming that there is a distance function on the states of $S$:
-$d(-,-)\: \St(S)\times \St(S) \to \R^+.$
+For a generalized IIT, one needs to be able to compare causes and effects along different substructures. This is done by assuming that there is a distance function on the states of $S$, $d(-,-)\: \St(S)\times \St(S) \to \R\geqz.$
 As in \citeme, we do not require this to be a metric, though it usually will be in examples. In classical IIT, this metric is the Wasserstein metric, while in quantum-classical IIT it is the metric induced by the norm of the system $C^*$-algebra. 
 
 We now have enough data to define the IIT-algoritm, as presented in \citeme and \citeme. The algorithm defines integration for all cause and effect repertoirs, and uses this to aggregate upwards to an integration value for the total system $S$.  
 
 \begin{definition}
-    Let $\cau(s,M,P)$ be a cause repertoir. Its \emph{integration} of is defined as the minimum distance from $\cau(s,M,P)$ to a decomposed repertoir associated to a non-trivial decomposition: 
-    $$\phi(\cau(s,M,P)) := \min_{(M_1, M_2), (P_1, P_2)} d(\cau(s,M,P), \cau_{M_1, M_2}^{P_1, P_2}(s,M,P)).$$
+    Let $\cau(s,M,P)$ be a cause repertoir. Its \emph{integration} $\phi(\cau(s,M,P))$ is defined as the minimum distance from $\cau(s,M,P)$ to a decomposed repertoir associated to a non-trivial decomposition: 
+    \[\min_{(M_1, M_2), (P_1, P_2)} d(\cau(s,M,P), \cau_{M_1, M_2}^{P_1, P_2}(s,M,P)).\]
     We define the integration level of an effect repertoir $\eff(s,M,P)$ similarly. 
 \end{definition}
 
@@ -312,15 +324,15 @@ If this $\Phi$-value is zero, then it means that for all mechanisms $M$, the int
 \begin{proof}[Proof of \cref{thm:obstructions-and-IIT}]
     The assumption of vanishing integrated information $\Phi(S,s) = 0$ implies by definition that for all mechanisms $M$, we have 
     $$\phi(M) = \min(\phi(\cau(s,M,P^{cc})), \phi(\eff(s,M,P^{ce}))) = 0.$$
-    In particular, for all mechanism-purview pairs $M,P$, there exists decompositions $M\simeq M_1\otimes M_2$ and $P\simeq P_1\otimes P_2$ such that either 
+    In particular, for all mechanism-purview pairs $M,P$, there exists associated decompositions $M\simeq M_1\otimes M_2$ and $P\simeq P_1\otimes P_2$ such that either 
     $$\cau(s,M,P)=\cau_{M_1, M_2}^{P_1, P_2}(s,M,P),$$
     or 
     $$\eff(s,M,P)=\eff_{M_1, M_2}^{P_1, P_2}(s,M,P).$$ 
     The goal is to exploit this fact to show that all obstruction classes are coboundaries. To accomplish this, we fix a decomposition $\psi\: S\simeq A\otimes B$ and a cut direction $\alpha \in \{\rightarrow, \leftarrow, \leftrightarrow\}$. To show that the associated obstruction class $[\Delta^{\psi, \alpha}]=0$ it suffices to show that it is a coboundary of some $0$-cochain $\theta$, in other words that $\Delta^{\psi, \alpha} = \delta \theta$. 
 
-    We define this cochain by $\theta(U) := T_{\mid U}$ for all $U\in \Sub_s(S)$. The coboundary is given on a $1$-simplex $\sigma\:U\to V$ by
-    $$\delta \theta (\sigma) = \F(\sigma)(T_{\mid V}) - T_{\mid U}.$$
-    By \cref{lm:no-integration-then-cuts-are-equal} we have $\F(\sigma)(T_{\mid V}) = \F(\sigma)(T_{\mid V}^{\psi, \alpha}) = T_{\mid U}^{\psi, \alpha}$, hence $\delta \theta (\sigma) = -\Delta^{\psi, \alpha}(U)$. In particular, $\Delta^{\psi, \alpha} = -\delta \theta$, so the obstruction is a coboundary, meaning that $[\Delta^{\psi, \alpha}] = 0$ in the integrated cohomology group $H_{int}^1(S)$.
+    We define this cochain by $\theta(U) := T_{\mid U}$ for all $U\in \Sub_s(S)$. On a $1$-simplex $\sigma\:U\to V$ the coboundary is given by
+    \[\delta \theta (\sigma) = \rho_U^V(T_{\mid V}) - T_{\mid U}.\]
+    As a simplex is an inclusion of a subsystem,  \cref{lm:no-integration-then-cuts-are-equal} gives $\rho_U^V(T_{\mid V}) = \rho_U^V(T_{\mid V}^{\psi, \alpha}) = T_{\mid U}^{\psi, \alpha}$, hence $\delta \theta (\sigma) = \Delta^{\psi, \alpha}(U)$. In particular, $\Delta^{\psi, \alpha} = \delta \theta$, so the obstruction is a coboundary, meaning that we have $[\Delta^{\psi, \alpha}] = 0$ in the integrated cohomology group $H_{int}^1(S)$.
 \end{proof}
 
 

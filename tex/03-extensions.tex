@@ -1,9 +1,101 @@
 
 
 \section{Extensions}
-
+Our framework naturally allows for some extensions and future directions, of which we here outline two. As mentioned before, our framework in this paper only uses the binary value of $\Phi$ -- it is either zero or non-zero -- but the true strength of IIT lies in its \emph{size}. Hence our first extension constructs a proper analogue to the $\Phi$-value in our framework, which we denote $\Phi_{coh}$. Further, our cohomological $\Phi$-value, as well as our previously defined obstruction classes, all lie in the first cohomology groups $H^1_{int}(S)$ of the system $(S, \D, T)$. Utilizing the higher order cohomology groups as well, we obtain higher order obstruction classes and higher order cohomological $\Phi$-values, which are analogous to the higher order synergy anf contextuality of \citeme. 
 
 \subsection{Cohomological integrated information}
+In \cref{ssec:obstruction-and-IIT} we introduced a distance function between states, 
+\[d\: \St(S)\times \St(S) \to \R\geqz,\]
+that we used to describe Tull--Kleiner's genealized IIT-algorithm. We here use this to infer a distance function on the cohomology groups, which we then use to define te cohomological integrated information $\Phi_{coh}$. 
 
+\begin{definition}
+    Let $A\in \Sub_s(S)$ be a subsystem. The \emph{distance} between two endomorphisms $f,g$ of $A$ is defined by how differently they act on the local state $s_{\mid A}$. In other words, 
+    \[\Vert f-g \Vert_A := d(f\circ s_{\mid A}, g\circ s_{\mid A}).\]
+    This extends linearly to a distance function on $\F(A)$. Furthermore, given a $k$-cochain $c \in C^k(S;\F)$, we define its \emph{size} as its largest value on the set of all $k$-simplicies: 
+    \[\Vert c \Vert := \max_\sigma \Vert c(\sigma)\Vert.\]
+\end{definition}
+
+In order to infer a size on cohomology classes, we simply need to incorporate the fact that cohomology classes are only defined up to a coboundary, as they are quotient classes of abelian groups. Hence, given a cohomology class $[c]\in H^k_{int}(S)$, we define 
+\[\Vert [c] \Vert := \min_{\theta\in C^{k-1}(S;\F)} \Vert c + \delta \theta \Vert.\]
+This definition makes the value intrinsic, as it minimizes over all possible representations of the class. 
+
+\begin{definition}
+    Let $S$ be a system in a state $s$. The \emph{cohomological integrated information} is defined as the size of the smalles obstruction class, 
+    \[\Phi_{coh}(S,s) := \min_{\psi, (\alpha_k)} \Vert [\Delta^{\psi, (\alpha_k)}]\Vert .\]
+\end{definition}
+
+The following result immediatly follows from the definition combined with \cref{thm:obstructions-and-IIT}. 
+
+\begin{proposition}
+    If $s$ is a state of a system $(S, \D, T)$ such that $\Phi(S,s) = 0$, then also $\Phi_{coh}(S,s)=0$.  
+\end{proposition}
+
+We hope to revisit this definition in future work and connect it to the definition of the standard integrated information value $\Phi(S,s)$. For now we explain how this solves Tull and Kleiners search for a functorial construction of integrated information. 
+
+In order to have functoriality, we need to understand what categories are present. In particular, we need a category that describes both systems $(S, \D, T)$ and their states $s$. The recipient category will be the poset category $\R\geqz$ of non-negative real numbers. A map into this poset category is functorial when it is monotone. 
+
+\begin{definition}
+    A \emph{system state} in a process theory $\C$, is a tuple $(S,\D, T, s)$, where $(S, \D, T)$ is a system in $\C$ and $s\: \1 \to S$ is a state of $S$. A \emph{morphism} of system states is a causal map 
+    \[(S, \D, T, s) \to (S', \D', T', s')\]
+    that
+    \begin{enumerate}
+        \item preserves states: $f \circ s = s'$;
+        \item preserves dynamics: $f \circ T = T'$;
+        \item preserves decompositions: for a decomposition $(A,B,\psi)$ these exists a decomposition $(f(A), f(B), \psi')$ into subsystems identified by $f$;
+        \item induces a functor on the poset categories: $f_* \: \Sub_s(S) \to \Sub_{s'}(S')$;
+        \item is compatible with the restriction maps: $f(\rho_U^V(c)) = \rho_{f(U)}^{f(V)(f(c))}$;
+        \item is non-expansive: $\Vert f_*(c) \Vert \leq \Vert c \Vert$.
+    \end{enumerate} 
+    The resulting category of system states and morphisms is denoted $\Sys(\C)$. 
+\end{definition}
+
+It follows from the definition of the category above that the cohomological integrated information is a functor, as the obstruction classes are functorial by design, and the properties of morphisms in $\Sys(\C)$ ensures that it is a monotone map. Hence we have the following proposition. 
+
+\begin{proposition}
+    \label{prop:functoriality}
+    Let $\C$ be a process theory. The cohomological integrated information is a functor 
+    \[\Phi_{coh} \: \Sys(\C) \to \R\geqz.\]
+    In particular, isomorphic system states have equal cohomological integrated information, 
+\end{proposition}
 
 \subsection{Higher order integration}
+
+Our setup of using obstruction theory easily allows us to extend integrated information to higher orders -- something that cohomology theory is a natural arena for. There are some attempts at this already, se for example \citeme, but we will save comparisons for future work. 
+
+Higher obstruction classes are defined using more refined decomposition of the system $S$. The intuition is that, given a decomposition $\psi\: S\simeq A\otimes B\otimes C$, the $\Phi$-values computed pairwise from these could all be zero, even if the total $\Phi$-value is not. This failure should be measured not by the bipartite obstruction classes previously defined, but by a higher obstruction class. 
+
+\begin{definition}
+    Let $S$ be an object in a process theory $\C$. A \emph{$k$-ary decomposition} of $S$ is a $k$-tuple $(A_1, A_2, \ldots, A_k)$ together with a causal isomorphism 
+    \[\psi \: S \simeq A_1\otimes A_2 \otimes \dots \otimes A_k.\] 
+    We will denote such a decomposition simply by $(A_k)$. In particular, a $k$-ary decomposition is an iterated binary composition, hence naturally lives in $\D(S)$. 
+\end{definition}
+
+By inserting noise, we can use these to construct \emph{multi-cut} time evolutions $T^{\psi, (\alpha_k)}$, where $(\alpha_k)$ is a sequence of $k$ directions, also allowing for some of the values being empty.  
+
+\begin{definition}
+    Given a system $(S, \D, T)$, a $k$-ary decomposition $(A_k)$ and a cut-vector $(\alpha_k)$, we define the associated obstruction class on a $k+1$-simplex $\sigma = U_0\rightarrow \dots \rightarrow U_k$ as the cohomology class of
+    \[\Delta^{\psi, (\alpha_k)}(\sigma) = \rho_{U_0}^{U_k}(T_{\mid U_k}) - \rho_{U_0}^{U_k}(T^{\psi, (\alpha_k)}_{\mid U_k}),\]
+    where $\rho_{U_0}^{U_k}$ is the iterated restriction from $U_k$ to $U_0$ defined by $\sigma$. 
+\end{definition}
+
+This is a class living in $H^k_{int}(S)$, which measures the failure of the largest subsystem $U_k$ to decompose into $k$ parts that are ``$(\alpha_k)$-independent'' -- if the direction vector consisted of only bidirectional arrows, then these parts would have been independent. For the case $k=1$, these classes reduce to the ones studied earlier. 
+
+Analogously to the construction above for $\Phi_{coh}(S,s)$ we can define higher order cohomological integrated information. 
+
+\begin{definition}
+    Let $(S,\D,T,s)$ be a system state. Its \emph{$k$-th order cohomological integrated information} is defined as the size of the smallest higher order obstruction class: 
+    \[\Phi_{coh}^k(S,s) := \min_{\psi, (\alpha_k)}\Vert [\Delta^{\psi, (\alpha_k)}]\Vert.\]
+\end{definition}
+
+As in \cref{prop:functoriality}, these higher order classes are functorial, and for $k=1$ we have $\Phi^1_{coh}(S,s)=\Phi_{coh}(S,s)$ as defined above. 
+
+This defines for a system state $(S,\D,T,s)$ a sequence of real numbers $\Phi^1_{coh}(S,s), \Phi^2_{coh}(S,s), \Phi^3_{coh}(S,s), \ldots$ that detect higher and higher orders of integration. We round off the paper with the following defintion and conjecture.  
+
+\begin{definition}
+    The integration order of a system state $(S,\D,T,s)$ is defined as the smallest $k$ such that $\Phi_{coh}^k(S,s)\neq 0$. If all higher cohomological integrated information vanishes, i.e., $\Phi_{coh}^k(S,s)=0$ for all $k$, then we say it has integration order $\infty$.  
+\end{definition}
+
+\begin{conjecture}
+    If $(S,\D,T,s)$ is a system state with integration order $\infty$, then $\Phi(S,s)=0$. 
+\end{conjecture}
+
