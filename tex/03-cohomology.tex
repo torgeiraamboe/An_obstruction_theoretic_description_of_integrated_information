@@ -1,0 +1,130 @@
+\subsection{Integrated cohomology}
+Given a system $(S, \D, T)$ and a global state $s\: \1 \to S$, we will denote by $\Sub_s(S)$ the category of subsystems of $S$, defined as the poset category associated to the poset structure in \citeme. In other words, $\Sub_s(S)$ is the category consisting of subsystems as objects, and morphisms being single comparison maps by the preorder structure. 
+% appendix in Tull-Kleiner. 
+
+The overall idea of our approach can be described as follows: 
+\begin{enumerate}
+    \item first, define a geometric object $\U$ based on our system $S$, which in this case will be a \v{C}ech-cover of $\Sub_s(S)$;
+    \item second, define a presheaf $\F$ of on $\Sub_s(S)$ that describes the cause-effect factorizations of $S$;
+    \item third, define the integrated cohomology of $S$ to be the \v{C}ech cohomology valued in this presheaf;
+    \item third, define natural descent obstruction classes;
+    \item and lastly, prove that these obstruction classes detect the existence of integrated information in $S$. 
+\end{enumerate}
+
+There are probably several possible choices for what presheaf $\F$ to use, depending on how categorical or how system specific one wants to be. If one focuses on actual IIT 4.0 constructions, then perhaps a probability based approach using intrinsic information and intrinsic difference would be a good strategy. We have, however, opted for a more categorical and general approach. This is in part to give generalized integrated information functorial properties, as discussed by Tull--Kleiner in \citeme. 
+
+\begin{definition}
+    The \emph{factorization presheaf} of $S$ is defined as the functor
+    \[\F\: \Sub_s(S)\op \to \Set\]
+    sending a subsystem $U$ to equivalence classes of local factorization data $(\psi_U, R_U)$, consisting of a decomposition $\psi_U$ of $U$ and a locally factorized cause-effect structure $R_U$. An inclusion $V\subseteq U$ defines a restriction map $\rho_V^U \: \F(U) \to \F(V)$ via the induced decomposition and the restricted cause-effest structure, $\rho_V^U([\psi_U, R_U]) = [\psi_{U\mid V}, R_{U\mid V}]$.
+\end{definition}
+
+
+\begin{remark}
+    Our setup is formally analogous to Abramsky--Brandenburger's sheaf theoretic description of contextuality, see \citeme and \citeme. The similarities are enticing, and we feel that that the possible interactions are worth further investigation. 
+%https://iopscience.iop.org/article/10.1088/1367-2630/13/11/113036
+%https://arxiv.org/abs/2011.04899
+% S. Abramsky, S. Mansfield and R. Soares Barbosa, The Cohomology of Non-Locality and Contextuality, in Proceedings of QPL 2011, Electronic Proceedings in Theoretical Computer Science, 2011.
+\end{remark}
+
+\begin{definition}
+    \v{C}ech cover
+\end{definition}
+
+\begin{definition}
+    \v{C}ech cover of $\Sub_s(S)$
+\end{definition}
+
+
+The intuition is as follows: The \v{C}ech nerve of $\Sub_s(S)$ gives us a geometric construction of \emph{where} integrated information can be tested. It consists formally of chains of substates of $S$ of all lengths, with topological structure that understands how these chains are related and connected. The presheaf gives us \emph{what} is measured on every level. The cohomology gives us information about which local factorizations that can be glued together to form a global factorization. If gluing fails, then there is some level of the system where its global structure cannot be described in terms of local ones, which is the essence of the system having integrated information. In particular, a $1$-cocycle measures the failure of a pairwise compatability, which we use to define obstruction classes. 
+
+\begin{definition}
+    Integrated cohomology groups
+\end{definition}
+
+\begin{definition}
+    Obstruction classes to factorization / descent
+\end{definition}
+
+The central claim of this paper is that these classes detect whether a system $S$ has integrated information or not. Hence, checking that these classes vanish proves that integrated information is non-zero, which might be much easier than computing $\Phi$, which can be a very hard task -- see \citeme. 
+
+\begin{lemma}
+    The obstruction classes are cocycles
+\end{lemma}
+
+
+% As we want to have access to the time evolutions $T$ and $T^{\psi, \alpha}$ for subsystems, it is natural to consider the \emph{endomorphisms} as a natural starting position for the presheaf. As we need to be able to understand the \emph{difference} between $T$ and $T^{\psi, \alpha}$, we also need access to a subtraction operation. The standard way to do this is as follows. 
+
+%\begin{definition}
+%    The \emph{dynamic presheaf} on $\Sub_s(S)$ is defined on objects as the free abelian group on the associated endomorphisms, 
+%    \begin{align*}
+%    \F\: \Sub_s(S)\op &\to \Ab \\
+%    A&\longmapsto \Z[\End(A)]
+%    \end{align*}
+%    Given a subsystem $U\leq A$, we define for any endomorphism $f\: A\to A$ a restriction map 
+%    $$\rho_{U}^{A}(f) = (\Id_U \otimes q_V)\circ f \circ (\Id_U\otimes w_V),$$
+%    where $V$ is the complement of $U$, i.e. the object such that $A\simeq U\otimes V$, which exists by the definition %of a subsystem. We then linearly extended this to $\Z[\End(A)]$, making $\F$ a presheaf. 
+%\end{definition}
+
+%\begin{remark}
+%    \label{rm:state-dependent-integration}
+%    One could also naturally choose to use the actual state $s_{\mid V}$ instead of the noise state $w_V$ in the definition of the restriction maps. Doing this would mean that the obstruction theory detects state-dependent integration, and not the intrinsic integration of the system. We believe that studying what happens upon making this change is an interesting avenue of future research. 
+%\end{remark}
+
+%\begin{remark}
+%    The above definition of the coboundary operator is completely analogous to the boundary operator for \v{C}ech cohomology, see \citeme. 
+%\end{remark}
+
+%Important for us will be the coboundary of a $0$-cochain $\theta$, which is given on a $1$-simplex $\sigma\: U\to V$ as
+%\begin{align*}
+%    \delta^0 \theta (\sigma) 
+%    &= \rho_U^V(\theta(V))-\theta(U)  
+%\end{align*}
+
+%We can now define the cohomology theory that we will use to define the obstruction classes. 
+
+%\begin{definition}
+%    Given a system $(S, \D, T)$ and a state $s\: \1 \to S$, we define the \emph{integrated cohomology} of $(S, \D, T)$ to be the cohomology of the nerve of $\Sub_s(S)$ evaluated in the dynamic presheaf $\F$. In other words, the $i$'th integrated cohomology group is defined by
+%    $$H^i_{int}(S) = H^i(N^\bullet(\Sub_s(S));\F) = \Ker(\delta^i)/\Ima(\delta^{i-1}).$$
+%\end{definition}
+
+%\begin{definition}[{\citeme}]
+%    Let $\C$ be a category. The \emph{nerve} of $\C$ is the simplicial complex $N^\bullet(\C)$ defined by having a $0$-simplex for each object in $\C$, a $1$-simplex for each morphism in $\C$, a $2$-simplex for every pair of composable morphisms, and generally an $k$-simplex $c_0\rightarrow c_1 \rightarrow \cdots \rightarrow c_k$ for any $k$-tuple of composable morphisms. For $0<i<k$ the $i$'th face maps $f_i$ are given by composing the two maps, while for $i=0,k$ it is given by omitting the first or last object respectively. The $i$'th degeneracy map $d_i$ is given by inserting an identity map at the $i$'th object.
+%\end{definition}
+
+%The nerve of a category is a way of encoding how all objects in the category are related to each other via a combinatorial space. Given a presheaf $\F$ on the category $\C$, one gets a cochain complex 
+%\[C^i(\C;\F) = \prod_{c_0\rightarrow \cdots \rightarrow c_i}\F(c_0),\]
+%where the coboundary map $\delta^k\: C^k(\C;\F) \to C^{k+1}(\C;\F)$ is defined on an $k$-cochain $\theta$ by the alternating sum
+%\[\delta^k(\theta) = \sum_{i=0}^{k+1}(-1)^i d_i(\theta).\]
+%More explicitly, on a $k+1$-simplex $\sigma = c_0\rightarrow \cdots \rightarrow c_{k}$ we have 
+%\begin{align*}
+%    d_0(\theta)(c_0\rightarrow \cdots \rightarrow c_{k})
+%    &= \rho_{c_0}^{c_1}(\theta)(c_1\rightarrow \cdots \rightarrow c_{k})
+%\end{align*}
+%and similarly for $k$. For $i>0$ we have 
+%\[d_i(\theta)(c_0\rightarrow \cdots \widehat{c_i}\rightarrow \cdots \rightarrow c_{k}),\]
+%where $\widehat{c_i}$ denotes the $i$'th object being omitted. 
+
+
+%\begin{remark}
+%    It is important to note that this is not simply the topological nerve cohomology of $\Sub_s(S)$, as this will almost always be trivial, see for example \citeme. The important part here is the use of the presheaf $\F$, which makes this a highly non-trivial cohomology theory. 
+%\end{remark}
+
+
+%\begin{definition}
+%    Given a decomposition $\psi$ and a direction $\alpha \in \{\rightarrow, \leftarrow, \leftrightarrow\}$, its associated \emph{obstruction class} is defined as the cohomology class of the $1$-cochain $\Delta^{\psi, \alpha}$ defined on $1$-simplicies $\sigma\: U\to V$ as 
+%    \[\Delta^{\psi,\alpha}(\sigma) = \rho_U^V(T_{|V}) - T^{\psi,\alpha}_{|U}.\]
+%\end{definition}
+
+
+%\begin{lemma}
+%    The obstruction classes $\Delta^{\psi, \alpha}$ are cocycles. 
+%\end{lemma}
+%\begin{proof}
+%    By definition we need to prove that $\delta^1 \Delta^{\psi, \alpha} = 0$. Let $\sigma = U\rightarrow V\rightarrow W$ be the $2$-simplex consisting of $1$-simplicies $\sigma_1\: U\rightarrow V$ and $\sigma_2 \: V\rightarrow W$. We have 
+%    \[\delta^1 \Delta^{\psi, \alpha}(\sigma) = \rho_V^W(\Delta^{\psi, \alpha}(\sigma_2))-\Delta^{\psi, \alpha}(\sigma_2\circ \sigma_1)+\Delta^{\psi, \alpha}(\sigma_1).\]
+%\end{proof}
+
+%\begin{remark}
+%The reader paying minute attention has perhaps noticed that mechanisms and purviews have yet to be featured in this framework. Our approach to measuring IIT is structurally somewhat different, as instead of starting with mechanisms and purviews and then aggregate local information upwards, we have the global structure as a reference and let mechanisms and purviews be derived observables. Hence they do not arise as primitive data, but as local test probes for evaluating the obstruction classes. We will, however, need to define and use these to relate our obstruction classes to the integrated information of $S$, as we will do in the following section.
+%\end{remark}
