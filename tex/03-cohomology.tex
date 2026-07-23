@@ -7,18 +7,53 @@ The overall idea of our approach can be described as follows:
     \item first, define a geometric object $\U$ based on our system $S$, which in this case will be a \v{C}ech-cover of $\Sub_s(S)$;
     \item second, define a presheaf $\F$ of on $\Sub_s(S)$ that describes the cause-effect factorizations of $S$;
     \item third, define the integrated cohomology of $S$ to be the \v{C}ech cohomology valued in this presheaf;
-    \item third, define natural descent obstruction classes;
-    \item and lastly, prove that these obstruction classes detect the existence of integrated information in $S$. 
+    \item and lastly, prove that the failure of descent for the \v{C}ech cover detects integrated information in $S$. 
 \end{enumerate}
+
+
+
+\begin{definition}
+    \v{C}ech cover of $\Sub_s(S)$
+\end{definition}
 
 There are probably several possible choices for what presheaf $\F$ to use, depending on how categorical or how system specific one wants to be. If one focuses on actual IIT 4.0 constructions, then perhaps a probability based approach using intrinsic information and intrinsic difference would be a good strategy. We have, however, opted for a more categorical and general approach. This is in part to give generalized integrated information functorial properties, as discussed by Tull--Kleiner in \citeme. 
 
 \begin{definition}
-    The \emph{factorization presheaf} of $S$ is defined as the functor
-    \[\F\: \Sub_s(S)\op \to \Set\]
-    sending a subsystem $U$ to equivalence classes of local factorization data $(\psi_U, R_U)$, consisting of a decomposition $\psi_U$ of $U$ and a locally factorized cause-effect structure $R_U$. An inclusion $V\subseteq U$ defines a restriction map $\rho_V^U \: \F(U) \to \F(V)$ via the induced decomposition and the restricted cause-effest structure, $\rho_V^U([\psi_U, R_U]) = [\psi_{U\mid V}, R_{U\mid V}]$.
+    Let $r$ be a repertoir (either a cause or effect) and $(\psi, A,B)$ a decomposition of $S$. The restrictions
+    \[r_{\mid A}\: \1 \to A \text{ and } r_{\mid B}\: \1\to B\]
+    define a new state 
+    \[r^\psi:= r_{\mid A}\otimes r_{\mid B}\: \1\simeq 1\otimes 1 \to A\otimes B \simeq S\]
+    which we call the \emph{factorized repertoir}. We say $r$ \emph{factors} over the decomposition $(A,B)$ if $r= r^\psi$, and we say that $r$ is \emph{factorizable} if it factors over some decomposition of $S$. 
 \end{definition}
 
+\begin{definition}
+    Given a subsystem $U\in \Sub_s(S)$, its \emph{local factorization data} $\Fact(U)$ is the set of equivalence classes of pairs $(\psi_U, r_U)$, where $\psi_U$ is a decomposition of $U$ and $r_U$ is a repertoir that factors over $\psi$, in other words $r_U=r_U^\psi$. 
+\end{definition}
+
+Given a subsystem $V\subseteq U$ and a decomposition $(\psi_U, A, B)$ of $U$, we can define an induced decomposition on $V$ by restricting the factors $A$ and $B$ through the chosen decomposition of $V$. Using this we obtain the following lemma. 
+
+\begin{lemma}
+    \label{lm:induced-factorization}
+    Let $\psi_U=(A,B)\in\D_{\mid U}$ and $r_U=r_{U\mid A}\otimes r_{U\mid B}$ be a local factorization datum on a subsystem $U$. If $V\subseteq U$ is a subsystem of $U$,then the restricted repertoire $r_{U\mid V}$ factors over the induced decomposition $\psi_{U\mid V}$.
+\end{lemma}
+\begin{proof}
+    Let the induced decomposition of $V$ be $\psi_{U\mid V}=(A_V,B_V)$, where $A_V$ and $B_V$ are obtained by restricting the factors $A$ and $B$ along the chosen decomposition of $V$.
+
+    Using transitivity of restriction,
+    \[(r_U)_{\mid A_V}=(r_{U\mid A})_{\mid A_V}\]
+    and similarly for $B$. Since restriction is defined by discarding complementary factors, naturality and monoidality of the discarding maps implies that
+    \[(r_{U\mid A}\otimes r_{U\mid B})_{\mid V}=(r_{U\mid A})_{\mid A_V}\otimes(r_{U\mid B})_{\mid B_V}.\]
+    Hence, $r_{U\mid V}=(r_U)_{\mid V}=(r_U)_{\mid A_V}\otimes (r_U)_{\mid B_V}$, showing that $r_{U\mid V}$ factors over the induced decomposition $\psi_{U\mid V}$.
+\end{proof}
+
+
+\begin{definition}
+    The \emph{factorization presheaf} is defined as the functor
+    \[\F\: \Sub_s(S)\op \to \Ab\]
+    sending a subsystem $U$ to the free group on $\Fact(U)$. An inclusion $V\subseteq U$ defines a by \cref{lm:induced-factorization} a restriction map $\rho_V^U \: \F(U) \to \F(V)$.
+\end{definition}
+
+The factorization presheaf is not always a sheaf with respect to the decomposition topology on $\Sub_s(S)$. In fact, our claim is that its failure to be a sheaf is detected by integrated information in $S$. 
 
 \begin{remark}
     Our setup is formally analogous to Abramsky--Brandenburger's sheaf theoretic description of contextuality, see \citeme and \citeme. The similarities are enticing, and we feel that that the possible interactions are worth further investigation. 
@@ -28,30 +63,86 @@ There are probably several possible choices for what presheaf $\F$ to use, depen
 \end{remark}
 
 \begin{definition}
-    \v{C}ech cover
+    Let $(S,\D,T)$ be a system in a state $s$. We define its \emph{integrated cohomology} to be $H_{int}^*(S) = \check{H}^*(\U;\F)$, where $\U$ is the decomposition cover of $\Sub_s(S)$ and $\F$ is the factorization presheaf.  
+\end{definition}
+
+
+The intuition is as follows: The \v{C}ech nerve of $\Sub_s(S)$ gives us a geometric construction of \emph{where} integrated information can be tested. It consists formally of chains of substates of $S$ of all lengths, with topological structure that understands how these chains are related and connected. The presheaf gives us \emph{what} is measured on every level. The cohomology gives us information about which local factorizations that can be glued together to form a global factorization. If gluing fails, then there is some level of the system where its global structure cannot be described in terms of local ones, which is the essence of the system having integrated information. In particular, a $1$-cocycle measures the failure of a pairwise compatability. 
+
+\begin{definition}
+    
+\end{definition}
+
+
+
+
+
+
+
+
+
+
+
+\subsection{Generalized IIT-algorithms}
+
+In order to prove the main theorem of this paper, we need to be able to compute and understand $\Phi$. We will use the \emph{IIT-algorithm} as developed by Tull--Kleiner in \citeme. This ensures that our theory works not only for classical IIT, but also quantum IIT and other variants that one would like to study, \citeme. 
+
+The IIT-algorithm defines integration for all cause and effect repertoirs, and uses this to aggregate upwards to an integration value for the total system $S$. This is done by assuming that there is a distance function on the states of $S$, $d(-,-)\: \St(S)\times \St(S) \to \R\geqz.$
+As in \citeme, we do not require this to be a metric, though it usually will be in examples. 
+
+\begin{remark}
+    In classical IIT, this metric $d(-,-)$ is the Wasserstein metric, while in quantum-classical IIT it is the metric induced by the norm of the system $C^*$-algebra.
+\end{remark} 
+
+\begin{definition}
+    Let $\cau(s,M,P)$ be a cause repertoir. Its \emph{integration} $\phi(\cau(s,M,P))$ is defined as the minimum distance from $\cau(s,M,P)$ to a decomposed repertoir associated to a non-trivial decomposition: 
+    \[\min_{(M_1, M_2), (P_1, P_2)} d(\cau(s,M,P), \cau_{M_1, M_2}^{P_1, P_2}(s,M,P)).\]
+    We define the integration level of an effect repertoir $\eff(s,M,P)$ similarly. 
 \end{definition}
 
 \begin{definition}
-    \v{C}ech cover of $\Sub_s(S)$
-\end{definition}
-
-
-The intuition is as follows: The \v{C}ech nerve of $\Sub_s(S)$ gives us a geometric construction of \emph{where} integrated information can be tested. It consists formally of chains of substates of $S$ of all lengths, with topological structure that understands how these chains are related and connected. The presheaf gives us \emph{what} is measured on every level. The cohomology gives us information about which local factorizations that can be glued together to form a global factorization. If gluing fails, then there is some level of the system where its global structure cannot be described in terms of local ones, which is the essence of the system having integrated information. In particular, a $1$-cocycle measures the failure of a pairwise compatability, which we use to define obstruction classes. 
-
-\begin{definition}
-    Integrated cohomology groups
+    Given a state $s\:\1\to S$ and a sub-system $M\in \Sub_s(S)$, the \emph{core cause} is the sub-system $P^{cc}\in \Sub_s(S)$ such that the associated cause repertoir $\cau(s,M,P)$ has maximal integration. Similarly, the \emph{core effect} is the sub-system $P^{ce}$ that maximizes the integration of the associated effect repertoir $\eff(s,M,P)$.    
 \end{definition}
 
 \begin{definition}
-    Obstruction classes to factorization / descent
+    The integration of a mechanism $M$ is then defined as 
+    $$\phi(M) := \min(\phi(\cau(s,M,P^{cc})), \phi(\eff(s,M,P^{ce}))).$$
 \end{definition}
 
-The central claim of this paper is that these classes detect whether a system $S$ has integrated information or not. Hence, checking that these classes vanish proves that integrated information is non-zero, which might be much easier than computing $\Phi$, which can be a very hard task -- see \citeme. 
+Given a sub-object $M\in \Sub_s(S)$, the triple consisting of the core cause repertoir, the core effect repertoir and the resulting integration defines the \emph{concept} of $M$. Allowing $M$ to vary, defines the \emph{$Q$-shape} of the state $s$. The collection of all $Q$-shapes defines the \emph{experience space} $\E(S)$ of the system $S$. See \citeme for the details. 
 
-\begin{lemma}
-    The obstruction classes are cocycles
-\end{lemma}
+\begin{remark}
+    One of the fundamental beliefs in IIT is that any conscious experience a system $S$ can have is an element of $\E(S)$. 
+\end{remark}
 
+By minimizing over all possible decompositions, one can similarly define the integration of a $Q$-shape. The subsystem with maximally integrated $Q$-shape is the system's \emph{major complex}, which by definition defines an element $\E(S,s)$ in the experience space $\E(S)$. IIT claims that this element is the particular concious experience of the system $S$ in the state $s$, and the associated $\Phi$-value is defined as the size of this concious experience: $\Phi(S,s) = \Vert \E(S,s)\Vert$. 
+
+If this $\Phi$-value is zero, then it means that for all mechanisms $M$, the integration $\phi(M)$ is zero, meaning that for all purviews $P$ there is a decomposition with the same integration of its cause and effect repertoir. In principle, decomposing the system does not change its cause and effect repertoirs. We now use this to proove our main result. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\subsection{Obstruction classes and generalized IIT}
+\label{ssec:obstruction-and-IIT}
+
+The goal of this section is to prove the following theorem.
+
+\begin{theorem}
+    \label{thm:obstructions-and-IIT}
+    Let $s$ be a state of a system $(S, \D, T)$. If there is no integrated information in $S$, then all of the decomposition obstruction classes vanish. In other words, 
+    \[\Phi(S,s)=0 \implies [\Delta^{\psi, \alpha}] = 0\] 
+    for all $A$, $\psi$ and $\alpha$. In particular, the existence of non-vanishing obstruction classes implies $\Phi(S,s)>0$, and hence that the classes $[\Delta^{\psi, \alpha}]$ form obstructions to the decomposition of causal structures. 
+\end{theorem}
 
 % As we want to have access to the time evolutions $T$ and $T^{\psi, \alpha}$ for subsystems, it is natural to consider the \emph{endomorphisms} as a natural starting position for the presheaf. As we need to be able to understand the \emph{difference} between $T$ and $T^{\psi, \alpha}$, we also need access to a subtraction operation. The standard way to do this is as follows. 
 

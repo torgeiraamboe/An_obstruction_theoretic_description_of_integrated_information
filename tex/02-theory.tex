@@ -2,9 +2,9 @@
 
 \section{IIT systems}
 
-In \citeme, Tull and Kleiner develop a category theoretic foundation for integrated information theory, based on symmetric monoidal categories with some extra structure that allows for the modeling of cause-effect structures. We will use this as a backdrop for our cohomology theory, hence we quickly review their setup. 
+In \citeme, Tull and Kleiner develop a category theoretic foundation for integrated information theory, based on symmetric monoidal categories with some extra structure. We will use this as a backdrop for our cohomology theory, hence we quickly review their setup. 
 
-\subsection{Process theories and decompositions}
+\subsection{Process theories}
 
 \begin{definition}
     A \emph{process theory} is a symmetric monoidal dagger category $(\C, \otimes, \1, \dagger)$, usually denoted simply by $\C$, together with two maps $q_S\: S\to \1$ and $w_S\: \1\to S$ for any $S\in \C$ satisfying monoidality and standard naturality conditions. Objects in $\C$ are interpreted as system types, and morphisms as physical processes. The dagger $\dagger\: \C\op\to \C$ is interpreted as a time-reversal operation. 
@@ -38,6 +38,10 @@ and similarly \emph{cocausal} if it preserves the noise state.
     The discarding process $q_S$ is the unique process with $q_S(s) = 1$ for all $s\in S$, meaning a process is causal whenever it is stochastic. The noise state is the uniform probability distribution with $w_S(s) = \frac{1}{\vert S \vert}$. 
 \end{example}
 
+\subsection{Decompositions and subsystems}
+
+The following definition will be the backbone of our functorial approach to integration in \cref{sec:integrated-cohomology}
+
 \begin{definition}
     Let $\C$ be a process theory, and $S$ an object in $\C$. A \emph{decomposition} of $S$ is a pair of objects $A, B \in \C$ together with a causal isomorphism $\psi\: S \simeq A\otimes B$. We denote decompositions by $(A, B, \psi)$, or sometimes simply by $(A, B)$.
 \end{definition}
@@ -58,10 +62,6 @@ The \emph{complement} decomposition of $(A,B)$ is the same decomposition, just i
 
 Intuitively, the restriction is defined by identifying $S$ with its decomposition, and then discarding the factor we don't want to consider. By functoriality and naturality, such restrictions depend only on the equivalence class in $\D(S)$, and not on the particular representative. 
 
-\subsection{System types and directional cuts}
-
-To define generalized integrated information theories, we need a notion of systems to study. These are objects in the ambient category $\C$ together with the extra structure defined in the previous section.  
-
 \begin{definition}
     A \emph{system} in $\C$ is a triple $(S, \D, T)$, where $S\in \C$, $\D$ is a decomposition set of $S$, and $T\:S\to S$ is a causal process, interpreted as a \emph{time evolution}. It is assumed that also $T^\dagger$ is causal. 
 \end{definition}
@@ -70,9 +70,67 @@ To define generalized integrated information theories, we need a notion of syste
     The most basic example is the \emph{trivial} system $(\1, \{\1\otimes \1\}, \Id_\1)$. 
 \end{example}
 
-A state of a system $(S, \D, T)$ is a state of $S$. Given such a state $s$ and a decomposition $(A, B)\in \D$, \citeme constructs a \emph{subsystem} $(A, \D_{\mid A}, T_{\mid A})$, where the restricted time evolution is defined by the composition
-$$A\overset{1\otimes s_{\mid B}}\to A\otimes B \overset{T}\to A\otimes B \overset{1\otimes q_{A}}\to A.$$
-These subsystems are again independent of the class representative in $\D$. 
+A state of a system $(S, \D, T)$ is a state of $S$. Given such a state $s$ and a decomposition $(A, B)\in \D$, \citeme constructs subsystems of $S$. 
+
+\begin{definition}
+    Given a system $(S, \D, T)$ in a state $s$, and a decomposition $(A,B)\in \D$, there is a \emph{subsystem} $(A, \D_{\mid A}, T_{\mid A})$, defined by the restricted decomposition set $\D_{\mid A}$ and a restricted time evolution $T_{\mid A}$ defined by the composition
+    \[A\overset{1\otimes s_{\mid B}}\to A\otimes B \overset{T}\to A\otimes B \overset{1\otimes q_{A}}\to A.\]
+\end{definition}
+
+\begin{remark}
+    These subsystems are again independent of the class representative of the decomposition $(A,B)$ in $\D$. 
+\end{remark}
+
+
+
+
+\subsection{Cause and effect structures}
+
+Central to IIT is the cause and effect structures of the system $S$. This is what models how each part of the system can have a causal effect on other parts of the system. 
+
+\begin{definition}
+    A \emph{mechanism-purview pair} is a pair of subsystems of a given system $(S, \D, T)$, depending on the same global state $s\: \1 \to S$.    
+\end{definition}
+
+Intuitively a mechanism describes the subset of $S$ that we are ``letting make a difference'', and the purview describes the subset of $S$ that is affected. 
+
+\begin{definition}
+    Given a mechanism $(M, \D_{\mid M}, T_{\mid M})$ and a purview $(P,\D_{\mid P}, T_{\mid P})$, we define the \emph{cause} to be process 
+    $$\cau\: M \overset{1\otimes w_{M'}}\to M\otimes M' \simeq S \overset{T}\to S \simeq P\otimes P' \overset{1\otimes q_{P'}}\to P,$$
+    where $M'$ and $P'$ are the complements in the decompositions defined by $M$ and $P$ respectively. Similarly, the \emph{effect} is defined as
+    $$\eff\: M \overset{1\otimes w_{M'}}\to M\otimes M' \simeq S \overset{T^\dagger}\to S \simeq P\otimes P' \overset{1\otimes q_{P'}}\to P.$$
+\end{definition}
+
+Note that both $\cau$ and $\eff$ send causal states to causal states. Intuitively, these capture the way the previous and next state of $P$ is constrained by the restricted state $s_{\mid M}$.  When the mechanism is the unit $\1$, then the cause and effect $\cau, \eff\: \1\to P$ are respectively called the \emph{unconstrained cause}, denoted $u\cau$ and the \emph{unconstrained effect}, denoted $u\eff$. 
+
+\begin{definition}
+    Given a state $s$ and a mechanism-purview pair $M,P$, the associated \emph{cause repertoir} is defined to be the state 
+    $$\cau(s,M,P) = \1\overset{s_{\mid M}}\to M \overset{\cau\otimes u\cau}\to P\otimes P' \simeq S.$$
+    One defines an \emph{effect repertoir} $\eff(s,M,P)$ similarly. 
+\end{definition}
+
+We also need to decompose and causes and effects.  
+
+\begin{definition}
+    Given a decomposition $(M_1, M_2)$ of a mechanism $M$, and a decomposition $(P_1, P_2)$ of a purview $P$, the \emph{decomposed} cause is the process 
+    $$\cau_{M_1, M_2}^{P_1, P_2} \: M \simeq M_1\otimes M_2 \overset{\cau\otimes \cau}\to P_1\otimes P_2 \simeq P,$$
+    and again similarly for defining the \emph{decomposed} effect.
+\end{definition}
+
+The \emph{decomposed} cause and effect repertoirs are then defined similarly to the normal ones, by replacing $\cau$ and $\eff$ with their decomposed variants in the definitions. We denote these states by $\cau_{M_1, M_2}^{P_1, P_2}(s,M,P)$ and $\eff_{M_1, M_2}^{P_1, P_2}(s,M,P)$ respectively. 
+
+The following definitions will be key in defining our factorization presheaf later. 
+
+\begin{definition}
+    Given a state $s$ of a system $(S, \D, T)$, its \emph{cause-effect structure} is the set
+    \[R_S = \{\cau(s,M,P), \eff(s,M,P)\}_{(M,P)}\]
+    over all mechanism-purview pairs. Similarly, we define the cause-effect structure of a subsystem $(A,\D_{\mid A}, T_{\mid A})$ for a decomposition $(A,B)$. 
+\end{definition}
+
+
+\subsection{Directional cuts}
+
+To relate our obstruction theoretic framework to classical IIT later, we will need to define cuts of systems. 
 
 Given a system $(S, \D, T)$ and a decomposition $(A, B, \psi) \in \D$, one needs to be able to form systems that disconnects certain causal connections in the total system. IIT 3.0 \citeme does this by introducing \emph{cut systems}, that directionally disconnects causal flow from the two parts. IIT 4.0 \citeme does this in a slightly different manner, by replacing parts of the inputs of the time evolutions with independent noise. We have included versions of IIT 4.0's disconnections in arbitrary system states for reference and intuition, but we remark that the actual implementation of such disconnections does not matter much, as long as they are functorial. 
 
@@ -99,10 +157,14 @@ A\otimes B\otimes A\otimes B \arrow[r, "T\otimes T"]                            
 
 We will use the notation $T^{\psi, \alpha}$, with $\alpha \in \{\leftarrow, \rightarrow, \leftrightarrow\}$ to denote a general disconnection based on a decomposition $\psi\: S\simeq A\otimes B$. As we did above with the restricted time evolution, we also get definitions of restricted cuts due to the functoriality of discarding and noise; these are denoted $T^{\psi, \alpha}_{\mid A}$.  
 
+Given a cut direction $\alpha$, we can also define cut cause and effect repertoirs, $\cau^\alpha(s,M,P)$ and $\eff^\alpha(s,M,P)$, by using the cut time evolution $T^{\psi, \alpha}$. Here $\psi$ is the decomposition associated to the mechanism $M$. Combining this with the decomposition of cause and effect repertoirs, gives \emph{cut-decomposed} cause and effect repertoirs. 
 
 
 
-\section{Integrated cohomology and obstruction classes}
+
+
+\section{Integrated cohomology}
+\label{sec:integrated-cohomology}
 
 In this section we present the more novel parts of this paper, which is a cohomology theory for IIT systems. We then build an obstruction theory for decomposing a physical system based on this cohomology theory, and show that it detects the existence of integrated information. Lastly we extend this to naturally define higher order integration, often referred to as higher \emph{synergy}. 
 
@@ -115,7 +177,7 @@ In essence, cohomology groups are mathematical constructions that measure the am
     such that $\delta^{i-1}\circ \delta^i = 0$ for all $i$.
 \end{definition}
 
-The the elements of $C^\bullet$ are called the $i$-cochains. An $i$-cochain in the image of the map $\delta^{i-1}$ is called a coboundary, while an $i$-cochain in the kernel of $\delta^i$ is called a cocycle. The equation $\delta^{i-1}\circ \delta^i = 0$ implies that $\Ima(\delta^{i-1})\subseteq \Ker(\delta^i)$, which is the fundamental fact used to define cohomology -- in words, any coboundary is also a cocycle. 
+The the elements of $C^\bullet$ are called the \emph{$i$-cochains}. An $i$-cochain in the image of the map $\delta^{i-1}$ is called a \emph{coboundary}, while an $i$-cochain in the kernel of $\delta^i$ is called a \emph{cocycle}. The equation $\delta^{i-1}\circ \delta^i = 0$ implies that $\Ima(\delta^{i-1})\subseteq \Ker(\delta^i)$, which is the fundamental fact used to define cohomology -- in words, any coboundary is also a cocycle. 
 
 \begin{definition}
     Given a cochain complex $C^\bullet$, its $i$'th \emph{cohomology group} is defined as the quotient group
@@ -123,118 +185,119 @@ The the elements of $C^\bullet$ are called the $i$-cochains. An $i$-cochain in t
     Elements of $H^i(C^\bullet)$ are called \emph{cohomology classes}. 
 \end{definition}
 
-One of the central goals of algebraic topology and algebraic geometry is to functorially assign cochain complexes to topological and geometric objects and compute the resulting homology groups. For a category of interest $\C$, for example topological spaces, manifolds or schemes, such assignments defines functors into the category of graded abelian groups $H^*\: \C \to \Ab_*$ called \emph{cohomology theories}. Examples include \emph{simplicial cohomology} \citeme, \emph{de Rham cohomology} \citeme and \emph{coherent cohomology} \citeme. 
-
-
-\subsection{Obstruction classes and generalized IIT}
-\label{ssec:obstruction-and-IIT}
-
-The goal of this section is to prove the following theorem.
-
-\begin{theorem}
-    \label{thm:obstructions-and-IIT}
-    Let $s$ be a state of a system $(S, \D, T)$. If there is no integrated information in $S$, then all of the decomposition obstruction classes vanish. In other words, 
-    \[\Phi(S,s)=0 \implies [\Delta^{\psi, \alpha}] = 0\] 
-    for all $A$, $\psi$ and $\alpha$. In particular, the existence of non-vanishing obstruction classes implies $\Phi(S,s)>0$, and hence that the classes $[\Delta^{\psi, \alpha}]$ form obstructions to the decomposition of causal structures. 
-\end{theorem}
-
-In order to do so we need to be able to compute and understand $\Phi$. We will use the method of \emph{generalized IIT's} as developed by Tull--Kleiner in \citeme, also formalized in the categorical setting in \citeme. This ensures that our theory works not only for classical IIT, but also quantum IIT and other variants that one would like to study, \citeme. 
+One of the central goals of algebraic topology and algebraic geometry is to functorially assign cochain complexes to topological and geometric objects and compute the resulting homology groups. For a category of interest $\C$, for example topological spaces, manifolds or schemes, such assignments defines functors into the category of graded abelian groups $H^*\: \C \to \Ab_*$ called \emph{cohomology theories}. Examples include \emph{simplicial cohomology} \citeme, \emph{de Rham cohomology} \citeme, \emph{coherent cohomology} \citeme and \v{C}ech cohomology. It is the latter one we use in this paper, so let us quickly recall its construction. The reader is refered to \citeme for details.  
 
 \begin{definition}
-    A \emph{mechanism-purview pair} is a pair of subsystems of a given system $(S, \D, T)$, depending on the same global state $s\: \1 \to S$.    
+    Cech cohomology
 \end{definition}
 
-Intuitively a mechanism describes the subset of $S$ that we are ``letting make a difference'', and the purview describes the subset of $S$ that is affected. 
+
+
+
+\subsection{The factorization presheaf}
+
+
 
 \begin{definition}
-    Given a mechanism $(M, \D_{\mid M}, T_{\mid M})$ and a purview $(P,\D_{\mid P}, T_{\mid P})$, we define the \emph{cause} to be process 
-    $$\cau\: M \overset{1\otimes w_{M'}}\to M\otimes M' \simeq S \overset{T}\to S \simeq P\otimes P' \overset{1\otimes q_{P'}}\to P,$$
-    where $M'$ and $P'$ are the complements in the decompositions defined by $M$ and $P$ respectively. Similarly, the \emph{effect} is defined as
-    $$\eff\: M \overset{1\otimes w_{M'}}\to M\otimes M' \simeq S \overset{T^\dagger}\to S \simeq P\otimes P' \overset{1\otimes q_{P'}}\to P.$$
-\end{definition}
-
-Note that both $\cau$ and $\eff$ send causal states to causal states. Intuitively, these capture the way the previous and next state of $P$ is constrained by the restricted state $s_{\mid M}$.  When the mechanism is the unit $\1$, then the cause and effect $\cau, \eff\: \1\to P$ are respectively called the \emph{unconstrained cause}, denoted $u\cau$ and the \emph{unconstrained effect}, denoted $u\eff$. 
-
-\begin{definition}
-    Given a state $s$ and a mechanism-purview pair $M,P$, the associated \emph{cause repertoir} is defined to be the state 
-    $$\cau(s,M,P) = \1\overset{s_{\mid M}}\to M \overset{\cau\otimes u\cau}\to P\otimes P' \simeq S.$$
-    One defines an \emph{effect repertoir} $\eff(s,M,P)$ similarly. 
-\end{definition}
-
-We also need to decompose and cut causes and effects.  
-
-\begin{definition}
-    Given a decomposition $(M_1, M_2)$ of a mechanism $M$, and a decomposition $(P_1, P_2)$ of a purview $P$, the \emph{decomposed} cause is the process 
-    $$\cau_{M_1, M_2}^{P_1, P_2} \: M \simeq M_1\otimes M_2 \overset{\cau\otimes \cau}\to P_1\otimes P_2 \simeq P,$$
-    and again similarly for defining the \emph{decomposed} effect.
-\end{definition}
-
-The \emph{decomposed} cause and effect repertoirs are then defined similarly to the normal ones, by replacing $\cau$ and $\eff$ with their decomposed variants in the definitions. We denote these states by $\cau_{M_1, M_2}^{P_1, P_2}(s,M,P)$ and $\eff_{M_1, M_2}^{P_1, P_2}(s,M,P)$ respectively. Given a cut direction $\alpha$, the \emph{cut} cause and effect repertoirs $\cau^\alpha(s,M,P)$ and $\eff^\alpha(s,M,P)$ is similarly defined by using the cut time evolution $T^{\psi, \alpha}$, where $\psi$ is the decomposition associated to the mechanism $M$. Combining the two approaches yields also \emph{cut-decomposed} cause and effect repertoirs. 
-
-For a generalized IIT, one needs to be able to compare causes and effects along different substructures. This is done by assuming that there is a distance function on the states of $S$, $d(-,-)\: \St(S)\times \St(S) \to \R\geqz.$
-As in \citeme, we do not require this to be a metric, though it usually will be in examples. In classical IIT, this metric is the Wasserstein metric, while in quantum-classical IIT it is the metric induced by the norm of the system $C^*$-algebra. 
-
-We now have enough data to define the IIT-algoritm, as presented in \citeme and \citeme. The algorithm defines integration for all cause and effect repertoirs, and uses this to aggregate upwards to an integration value for the total system $S$.  
-
-\begin{definition}
-    Let $\cau(s,M,P)$ be a cause repertoir. Its \emph{integration} $\phi(\cau(s,M,P))$ is defined as the minimum distance from $\cau(s,M,P)$ to a decomposed repertoir associated to a non-trivial decomposition: 
-    \[\min_{(M_1, M_2), (P_1, P_2)} d(\cau(s,M,P), \cau_{M_1, M_2}^{P_1, P_2}(s,M,P)).\]
-    We define the integration level of an effect repertoir $\eff(s,M,P)$ similarly. 
+    Let $(S,\D,T)$ be a system in a state $s$. We define the repertoir presheaf $\EuScript{R}$ to be the functor 
+    \begin{align*}
+        \EuScript{R}\: \Sub_s(S)\op &\to \Ab \\
+        U &\longmapsto \Z[R_U]  
+    \end{align*}
+    mapping a subsystem $U$ to the free group on equivalence classes of cause-effect structures on $U$. Given a subsystem inclusion $V\hookrightarrow U$, the restriction map $\rho_U^V\: \EuScript{R}(U)\to \EuScript{R}(V)$ is defined as the equivalence class $[R_{U\mid V}]$, extended linearly.
 \end{definition}
 
 \begin{definition}
-    Given a state $s\:\1\to S$ and a sub-system $M\in \Sub_s(S)$, the \emph{core cause} is the sub-system $P^{cc}\in \Sub_s(S)$ such that the associated cause repertoir $\cau(s,M,P)$ has maximal integration. Similarly, the \emph{core effect} is the sub-system $P^{ce}$ that maximizes the integration of the associated effect repertoir $\eff(s,M,P)$.    
+    Let $r$ be a repertoir (either a cause or effect) and $(A,B)$ a decomposition of $S$. The restrictions
+    \[r_{\mid A}\: \1 \to A \text{ and } r_{\mid B}\: \1\to B\]
+    define a new state 
+    \[r_{\mid A}\otimes r_{\mid B}\: \1\simeq 1\otimes 1 \to A\otimes B \simeq S\]
+    which we call the \emph{factorized repertoir}. We say $r$ \emph{factors} over the decomposition $(A,B)$ if $r= r_{\mid A}\otimes r_{\mid B}$, and we say that $r$ is \emph{factorizable} if it factors over some decomposition of $S$. 
 \end{definition}
 
-\begin{definition}
-    The integration of a mechanism $M$ is then defined as 
-    $$\phi(M) := \min(\phi(\cau(s,M,P^{cc})), \phi(\eff(s,M,P^{ce}))).$$
-\end{definition}
+%\begin{lemma}
+%    Let $s$ be a state of a system $(S,\D,T)$. There is a sub-presheaf $\F$ of $\EuScript{R}$, defined on objects $U\in \Sub_s(S)$ by 
+%    \[\F(U) = \{r\in \EuScript{R}(U) \mid r \text{ is factorizable}\}.\] 
+%\end{lemma}
+%\begin{proof}
+%    The set $\F(U)$ is by definition a subset of $\EuScript{R}(U)$, hence we only need to check the restrictions. This follows from the fact that if $r$ factors over a decomposition $(\phi,A,B)$, then any restriction $r_{\mid V}$ factors over the induced decomposition of $V$. Indeed, by definition
+%    $s_{\mid A}=(\Id_A\otimes q_B)\circ \psi \circ s.$ Restricting further to $U$ gives
+%    \[(s_{\mid A})_{\mid U}=(\Id_U\otimes q_V)\circ \phi \circ(\Id_A\otimes q_B)\circ \psi \circ s.\]
+%    The monoidal product is functorial, giving
+%    \[(\Id_U\otimes q_V\otimes q_B)\circ(\phi\otimes \Id_B)\circ \psi \circ s.\]
+%    The discarding maps are also monoidal, hence
+%    \[(s_{\mid A})_{\mid U}=(\Id_U\otimes q_{V\otimes B})\circ (\phi\otimes \Id_B)\circ \psi \circ s.\]
+%    We can now recognize $(\phi\otimes \Id_B)\circ \psi$ as precisely the induced decomposition
+%    \[S \simeq U\otimes (V\otimes B),\]
+%    hence the right-hand side is exactly the definition of the restriction $s_{\mid U}$. Thus,
+%    \[(s_{\mid A})_{\mid U}=s_{\mid U},\]
+%    meaning that for any $V\hookrightarrow U$, we have $\rho^U_V(\F(U))\subseteq \F(V)$, finishing the proof.
+%\end{proof}
 
-Given a sub-object $M\in \Sub_s(S)$, the triple consisting of the core cause repertoir, the core effect repertoir and the resulting integration defines the \emph{concept} of $M$. Allowing $M$ to vary, defines the \emph{$Q$-shape} of the state $s$. The collection of all $Q$-shapes defines the \emph{experience space} $\E(S)$ of the system $S$. See \citeme for the details. 
 
-\begin{remark}
-    One of the fundamental beliefs in IIT is that any conscious experience a system $S$ can have is an element of $\E(S)$. 
-\end{remark}
 
-By minimizing over all possible decompositions, one can similarly define the integration of a $Q$-shape. The subsystem with maximally integrated $Q$-shape is the system's \emph{major complex}, which by definition defines an element $\E(S,s)$ in the experience space $\E(S)$. IIT claims that this element is the particular concious experience of the system $S$ in the state $s$, and the associated $\Phi$-value is defined as the size of this concious experience: $\Phi(S,s) = \Vert \E(S,s)\Vert$. 
 
-If this $\Phi$-value is zero, then it means that for all mechanisms $M$, the integration $\phi(M)$ is zero, meaning that for all purviews $P$ there is a decomposition with the same integration of its cause and effect repertoir. In principle, decomposing the system does not change its cause and effect repertoirs. We now use this to proove our main result. 
+%This means that there is a short exact sequence of presheaves
+%\[0\to \F \to \EuScript{R}\to \Q\to 0,\]
+%where $\Q$ is the quotient presheaf. The set $\Q(U)$ now contains only the repertoir information that noes not factor over any decomposition. 
 
-\begin{lemma}
-    \label{lm:no-integration-then-cuts-are-equal}
-    Let $(S, \D, T)$ be a system, $s\:\1\to S$ a state of $S$, $(A,B,\psi)$ a decomposition and $\alpha$ a cut direction. If $\Phi(S,s)=0$, then for every sub-system $U\in \Sub_s(S)$ the restricted dynamics $T_{\mid U}$ and the restricted cut-dynamics $T^{\psi,\alpha}_{\mid U}$ are equal in $\F(U)$.  
-\end{lemma}
-\begin{proof}
-    By definition there is a complement $U'$ of $U$ such that $(U,U')$ is a decomposition of $S$. We consider $U$ as a mechanism, with purview the total system $S$. The associated cause repertoir $\cau(s,U,S)$ is equivalent to the composite
-    $$\1\overset{s_{\mid U}}\to U \overset{T_{\mid U}}\to U \overset{1_U \otimes w_{U'}}\to U\otimes U' \cong S.$$
-    The same description holds for the cut-decomposed cause repertoir $cau_{U,U'}^{\1,S,\alpha}(s,U,S)$, i.e., it is equivalent to the composite 
-    $$\1 \overset{s_{\mid U}}\to U \overset{T_{\mid U}^{\psi, \alpha}}\to U \overset{1_U \otimes w_{U'}}\to U\otimes U' \cong S.$$
-    As the embedding $\End(U)\hookrightarrow \End(U)$ defined by $f\mapsto (\Id_U\otimes w_{U'})\circ f\circ s_{\mid U}$ is injective in the image $\F(U)$, equality of the cause repertoirs implies equality of the underlying endomorphisms of $U$. In particular, the restricted endomorphisms $T_{\mid U}$ and $T_{\mid U}^{\psi, \alpha}$ are equal if and only if the associated cause repertoirs are equal. 
+%\v{C}ech cohomology is by \citeme exact in presheaves, hence the short exact sequence of presheaves above induces a long exact sequence in \v{C}ech cohomology 
+%\begin{center}
+%\begin{tikzcd}
+%0 \arrow[r] & \check{H}^0(\U;\F) \arrow[r] & \check{H}^0(\U;\EuScript{R}) \arrow[r] & \check{H}^0(\U;\Q) \arrow[lld, "\delta", swap] \\
+%& \check{H}^1(\U;\F) \arrow[r] & \check{H}^1(\U;\EuScript{R}) \arrow[r] & \cdots                        
+%\end{tikzcd}
+%\end{center}
+% https://stacks.math.columbia.edu/tag/03AO
 
-    Now, by assumption we have $\Phi(S,s)=0$, which by definition means we have non-trivial decompositions of $U$ and $S$ such that either the cause or effect repertoir factorizes. Without loss of generality we assume this to be the cause repertoir: $\cau(s,U,S)=cau_{U_1,U_2}^{S_1,S_2}(s,U,S)$. By construction, the cut time evolutions and the cause and effect maps are defined by inserting noise on complements. Hence, this equivalence on cause repertoirs implies that the action of $T$ on $U$ is the same as the restricted action of $T^{\psi, \alpha}$. 
+%Now, let $[q]\in \chech{H}^0(\U;\Q)$. By construction, $[q]$ lifts to a global section $[r]\in \chech{H}^0(\U;\EuScript{R})$ if and only if and only if $\delta([q])=0$, due to the exactness of the sequence. 
+
+
+
+
+
+
+
+
+
+
+
+
+% OLD STUFF
+
+%\begin{lemma}
+%    \label{lm:no-integration-then-cuts-are-equal}
+%    Let $(S, \D, T)$ be a system, $s\:\1\to S$ a state of $S$, $(A,B,\psi)$ a decomposition and $\alpha$ a cut direction. If $\Phi(S,s)=0$, then for every sub-system $U\in \Sub_s(S)$ the restricted dynamics $T_{\mid U}$ and the restricted cut-dynamics $T^{\psi,\alpha}_{\mid U}$ are equal in $\F(U)$.  
+%\end{lemma}
+%\begin{proof}
+%    By definition there is a complement $U'$ of $U$ such that $(U,U')$ is a decomposition of $S$. We consider $U$ as a mechanism, with purview the total system $S$. The associated cause repertoir $\cau(s,U,S)$ is equivalent to the composite
+%    $$\1\overset{s_{\mid U}}\to U \overset{T_{\mid U}}\to U \overset{1_U \otimes w_{U'}}\to U\otimes U' \cong S.$$
+%    The same description holds for the cut-decomposed cause repertoir $cau_{U,U'}^{\1,S,\alpha}(s,U,S)$, i.e., it is equivalent to the composite 
+%    $$\1 \overset{s_{\mid U}}\to U \overset{T_{\mid U}^{\psi, \alpha}}\to U \overset{1_U \otimes w_{U'}}\to U\otimes U' \cong S.$$
+%    As the embedding $\End(U)\hookrightarrow \End(U)$ defined by $f\mapsto (\Id_U\otimes w_{U'})\circ f\circ s_{\mid U}$ is injective in the image $\F(U)$, equality of the cause repertoirs implies equality of the underlying endomorphisms of $U$. In particular, the restricted endomorphisms $T_{\mid U}$ and $T_{\mid U}^{\psi, \alpha}$ are equal if and only if the associated cause repertoirs are equal. 
+
+%    Now, by assumption we have $\Phi(S,s)=0$, which by definition means we have non-trivial decompositions of $U$ and $S$ such that either the cause or effect repertoir factorizes. Without loss of generality we assume this to be the cause repertoir: $\cau(s,U,S)=cau_{U_1,U_2}^{S_1,S_2}(s,U,S)$. By construction, the cut time evolutions and the cause and effect maps are defined by inserting noise on complements. Hence, this equivalence on cause repertoirs implies that the action of $T$ on $U$ is the same as the restricted action of $T^{\psi, \alpha}$. 
     
-    Given a $1$-simplex $\sigma \: U\to V$ we then have $\F(\sigma)(T) = \F(T^{\psi, \alpha})$, which by definition implies that $T_{\mid U}$ and $T_{\mid U}^{\psi, \alpha}$ are equivalent in $\F(U)$. 
-\end{proof}
+%    Given a $1$-simplex $\sigma \: U\to V$ we then have $\F(\sigma)(T) = \F(T^{\psi, \alpha})$, which by definition implies that $T_{\mid U}$ and $T_{\mid U}^{\psi, \alpha}$ are equivalent in $\F(U)$. 
+%\end{proof}
 
-\begin{remark}
-    Injectivity in the above argument relies crucially on the use of the noise state $w$ rather than the actual system state. In \cref{rm:state-dependent-integration} we mentioned the option of state-dependent integration, but in this case the above argument fails, and one would need a different approach to make similar claims. 
-\end{remark}
+%\begin{remark}
+%    Injectivity in the above argument relies crucially on the use of the noise state $w$ rather than the actual system state. In \cref{rm:state-dependent-integration} we mentioned the option of state-dependent integration, but in this case the above argument fails, and one would need a different approach to make similar claims. 
+%\end{remark}
 
-\begin{proof}[Proof of \cref{thm:obstructions-and-IIT}]
-    The assumption of vanishing integrated information $\Phi(S,s) = 0$ implies by definition that for all mechanisms $M$, we have 
-    $$\phi(M) = \min(\phi(\cau(s,M,P^{cc})), \phi(\eff(s,M,P^{ce}))) = 0.$$
-    In particular, for all mechanism-purview pairs $M,P$, there exists associated decompositions $M\simeq M_1\otimes M_2$ and $P\simeq P_1\otimes P_2$ such that either 
-    $$\cau(s,M,P)=\cau_{M_1, M_2}^{P_1, P_2}(s,M,P),$$
-    or 
-    $$\eff(s,M,P)=\eff_{M_1, M_2}^{P_1, P_2}(s,M,P).$$ 
-    The goal is to exploit this fact to show that all obstruction classes are coboundaries. To accomplish this, we fix a decomposition $\psi\: S\simeq A\otimes B$ and a cut direction $\alpha \in \{\rightarrow, \leftarrow, \leftrightarrow\}$. To show that the associated obstruction class $[\Delta^{\psi, \alpha}]=0$ it suffices to show that it is a coboundary of some $0$-cochain $\theta$, in other words that $\Delta^{\psi, \alpha} = \delta \theta$. 
+%\begin{proof}[Proof of \cref{thm:obstructions-and-IIT}]
+%    The assumption of vanishing integrated information $\Phi(S,s) = 0$ implies by definition that for all mechanisms $M$, we have 
+%    $$\phi(M) = \min(\phi(\cau(s,M,P^{cc})), \phi(\eff(s,M,P^{ce}))) = 0.$$
+%    In particular, for all mechanism-purview pairs $M,P$, there exists associated decompositions $M\simeq M_1\otimes M_2$ and $P\simeq P_1\otimes P_2$ such that either 
+%    $$\cau(s,M,P)=\cau_{M_1, M_2}^{P_1, P_2}(s,M,P),$$
+%    or 
+%    $$\eff(s,M,P)=\eff_{M_1, M_2}^{P_1, P_2}(s,M,P).$$ 
+%    The goal is to exploit this fact to show that all obstruction classes are coboundaries. To accomplish this, we fix a decomposition $\psi\: S\simeq A\otimes B$ and a cut direction $\alpha \in \{\rightarrow, \leftarrow, \leftrightarrow\}$. To show that the associated obstruction class $[\Delta^{\psi, \alpha}]=0$ it suffices to show that it is a coboundary of some $0$-cochain $\theta$, in other words that $\Delta^{\psi, \alpha} = \delta \theta$. 
 
-    We define this cochain by $\theta(U) := T_{\mid U}$ for all $U\in \Sub_s(S)$. On a $1$-simplex $\sigma\:U\to V$ the coboundary is given by
-    \[\delta \theta (\sigma) = \rho_U^V(T_{\mid V}) - T_{\mid U}.\]
-    As a simplex is an inclusion of a subsystem,  \cref{lm:no-integration-then-cuts-are-equal} gives $\rho_U^V(T_{\mid V}) = \rho_U^V(T_{\mid V}^{\psi, \alpha}) = T_{\mid U}^{\psi, \alpha}$, hence $\delta \theta (\sigma) = \Delta^{\psi, \alpha}(U)$. In particular, $\Delta^{\psi, \alpha} = \delta \theta$, so the obstruction is a coboundary, meaning that we have $[\Delta^{\psi, \alpha}] = 0$ in the integrated cohomology group $H_{int}^1(S)$.
-\end{proof}
-
+%    We define this cochain by $\theta(U) := T_{\mid U}$ for all $U\in \Sub_s(S)$. On a $1$-simplex $\sigma\:U\to V$ the coboundary is given by
+%    \[\delta \theta (\sigma) = \rho_U^V(T_{\mid V}) - T_{\mid U}.\]
+%    As a simplex is an inclusion of a subsystem,  \cref{lm:no-integration-then-cuts-are-equal} gives $\rho_U^V(T_{\mid V}) = \rho_U^V(T_{\mid V}^{\psi, \alpha}) = T_{\mid U}^{\psi, \alpha}$, hence $\delta \theta (\sigma) = \Delta^{\psi, \alpha}(U)$. In particular, $\Delta^{\psi, \alpha} = \delta \theta$, so the obstruction is a coboundary, meaning that we have $[\Delta^{\psi, \alpha}] = 0$ in the integrated cohomology group $H_{int}^1(S)$.
+%\end{proof}
 
 
 
